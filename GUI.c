@@ -7,7 +7,12 @@ char* httpsGet(char token[], char url[]);
 int testCode();
 
 GtkWidget *firstnameLabel, *firstnameEntry, *lastnameLabel, *lastnameEntry, *searchBtn, *grid;
-  char chunk[];
+  struct MemoryStruct chunk;
+
+struct MemoryStruct {
+  char *memory;
+  size_t size;
+};
 
 void search_button_clicked(GtkWidget *wid,gpointer data)
  {
@@ -16,7 +21,16 @@ void search_button_clicked(GtkWidget *wid,gpointer data)
 
       main2(searchData, searchData2);
 
-      gtk_label_set_text(GTK_LABEL(data),chunk); 
+
+
+      char sub[1000];
+      int c = 0;
+      while (c < 11) {
+      sub[c] = chunk.memory[3+c-1];
+      c++;
+   }
+   sub[c] = '\0';
+      gtk_label_set_text(GTK_LABEL(data), sub); 
       gtk_entry_set_text(GTK_ENTRY(firstnameEntry),""); 
       gtk_entry_set_text(GTK_ENTRY(lastnameEntry),"");
  } 
@@ -62,15 +76,26 @@ static void activate (GtkApplication* app, gpointer user_data)
 
 
  
+ 
 static size_t
 WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp)
 {
-    size_t realsize = size * nmemb;
-    //strcpy(contents, realsize);
-    //strcat(contents, realsize);
-    return size * nmemb;
-
-
+  size_t realsize = size * nmemb;
+  struct MemoryStruct *mem = (struct MemoryStruct *)userp;
+ 
+  char *ptr = realloc(mem->memory, mem->size + realsize + 1);
+  if(!ptr) {
+    /* out of memory! */
+    printf("not enough memory (realloc returned NULL)\n");
+    return 0;
+  }
+ 
+  mem->memory = ptr;
+  memcpy(&(mem->memory[mem->size]), contents, realsize);
+  mem->size += realsize;
+  mem->memory[mem->size] = 0;
+ 
+  return realsize;
 }
 
 
@@ -130,13 +155,13 @@ char* httpsGet(char token[], char url[])
         headers = curl_slist_append(headers, "charset: utf-8");
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
-      //  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
-        //curl_easy_setopt(curl, CURLOPT_WRITEDATA, &chunk);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&chunk);
 
         res = curl_easy_perform(curl);
     }
-
-      //free(chunk.memory);
+    printf(chunk.memory);
+      free(chunk.memory);
 
     curl_easy_cleanup(curl);
 }
