@@ -156,14 +156,14 @@ char* httpsGet(char token[], char url[])
         res = curl_easy_perform(curl);
     }
     printf(chunk.memory);
-    parseHtml();
+    parseJson();
       free(chunk.memory);
 
     curl_easy_cleanup(curl);
 }
 
 
-void parseHtml() {
+void parseJson() {
          memmove(chunk.memory, chunk.memory+34+55+9, strlen(chunk.memory));
         
 
@@ -196,7 +196,7 @@ void parseHtml() {
     }
         //printf (index);
     memmove(chunk.memory, chunk.memory+index+13 ,strlen(chunk.memory));
-    const char deli[] = "\"";   // deli could also be declared as [2] or as const char *. Take your pick...
+    const char deli[] = "\"";  
   
 
     token2 = strtok(chunk.memory, deli); 
