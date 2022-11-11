@@ -5,9 +5,12 @@
 
 char* httpsGet(char token[], char url[]);
 int testCode();
-
+  char *token2;
 GtkWidget *firstnameLabel, *firstnameEntry, *lastnameLabel, *lastnameEntry, *searchBtn, *grid;
   struct MemoryStruct chunk;
+
+
+
 
 struct MemoryStruct {
   char *memory;
@@ -22,15 +25,7 @@ void search_button_clicked(GtkWidget *wid,gpointer data)
       main2(searchData, searchData2);
 
 
-
-      char sub[1000];
-      int c = 0;
-      while (c < 11) {
-      sub[c] = chunk.memory[3+c-1];
-      c++;
-   }
-   sub[c] = '\0';
-      gtk_label_set_text(GTK_LABEL(data), sub); 
+      gtk_label_set_text(GTK_LABEL(data), token2); 
       gtk_entry_set_text(GTK_ENTRY(firstnameEntry),""); 
       gtk_entry_set_text(GTK_ENTRY(lastnameEntry),"");
  } 
@@ -161,7 +156,49 @@ char* httpsGet(char token[], char url[])
         res = curl_easy_perform(curl);
     }
     printf(chunk.memory);
+    parseHtml();
       free(chunk.memory);
 
     curl_easy_cleanup(curl);
+}
+
+
+void parseHtml() {
+         memmove(chunk.memory, chunk.memory+34+55+9, strlen(chunk.memory));
+        
+
+  char w[10] = "full";  
+    int i=0,k=0,c,index;
+
+
+           while(chunk.memory[i]!='\0')
+    {
+        
+        if(chunk.memory[i]==w[0])
+        {
+            k=1;
+            for(c=1;w[c]!='\0';c++)
+            {
+                if(chunk.memory[i+c]!=w[c])
+                {
+                 k=0;
+                 break;
+                }
+            }
+        
+        }
+        if(k==1)
+        {
+                index=i;
+        }
+        i++;
+        k=0;    
+    }
+        //printf (index);
+    memmove(chunk.memory, chunk.memory+index+13 ,strlen(chunk.memory));
+    const char deli[] = "\"";   // deli could also be declared as [2] or as const char *. Take your pick...
+  
+
+    token2 = strtok(chunk.memory, deli); 
+    
 }
