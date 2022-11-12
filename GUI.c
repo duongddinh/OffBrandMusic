@@ -10,7 +10,7 @@ GtkWidget *firstnameLabel, *firstnameEntry, *lastnameLabel, *lastnameEntry, *sea
 struct MemoryStruct chunk;
 
 /* Function Prototypes */
-int main2(const gchar *, const gchar *);
+void main2(const gchar *, const gchar *);
 void parseJson();
 void httpsGet(char token[], char url[]);
 
@@ -31,26 +31,25 @@ void search_button_clicked(GtkWidget *wid,gpointer data) {
 }
 
 static void activate (GtkApplication* app, gpointer user_data) {
+	/* Code to draw the application window */
 	GtkWidget *window;
 	window = gtk_application_window_new (app);
 	gtk_window_set_title (GTK_WINDOW (window), "one of the top hits by artist");
 	gtk_window_set_default_size (GTK_WINDOW (window), 500, 400);
 	
+	/* Draw search box for firstname */
 	GtkWidget *showSearch;
-	firstnameLabel = gtk_label_new("First name:");
+	firstnameLabel = gtk_label_new("First Name:");
 	firstnameEntry = gtk_entry_new();
-	gtk_entry_set_placeholder_text(GTK_ENTRY(firstnameEntry),"first name");
-	//GIcon *icon; 
-	//GFile *path;
-	//path = g_file_new_for_path("");
-	//icon = g_file_icon_new(path);
-	//gtk_entry_set_icon_from_gicon(GTK_ENTRY(firstnameEntry),GTK_ENTRY_ICON_PRIMARY,icon);
+	gtk_entry_set_placeholder_text(GTK_ENTRY(firstnameEntry),"First Name");
 	
-	lastnameLabel = gtk_label_new("Lastname:");
+	/* Draw search box for lastname */
+	lastnameLabel = gtk_label_new("Last Name:");
 	lastnameEntry = gtk_entry_new();
-	gtk_entry_set_placeholder_text(GTK_ENTRY(lastnameEntry),"last name");
-	//gtk_entry_set_visibility(GTK_ENTRY(lastnameEntry),FALSE);
-	searchBtn = gtk_button_new_with_label("search");
+	gtk_entry_set_placeholder_text(GTK_ENTRY(lastnameEntry),"Last Name");
+	
+	/* Draw Search Button In the window */
+	searchBtn = gtk_button_new_with_label("Search!");
 	showSearch = gtk_label_new("");
 	
 	g_signal_connect(searchBtn,"clicked",G_CALLBACK(search_button_clicked),showSearch);
@@ -97,14 +96,13 @@ int main(int argc,char **argv) {
 	return status;
 }
 
- int main2(const gchar firstname[30], const gchar lastname[30]) {
+ void main2(const gchar firstname[30], const gchar lastname[30]) {
  	char genius[60] = "https://api.genius.com/search?q=";
  	char geniusToken[] = "mXWeiTbMTOxwTP87bXlHJtTKcaam60Njvfb5OsR8XAHflIqFKvGEgGuAkXZ2dtkC";
 	strcat(genius, firstname);
 	strcat(genius, "%20");
 	strcat(genius, lastname);	
 	httpsGet(geniusToken, genius);
- 	return 0;
 }
 
 void httpsGet(char token[], char url[]) {
@@ -134,7 +132,9 @@ void httpsGet(char token[], char url[]) {
 		res = curl_easy_perform(curl);
 	}
 	
+	/* Statement to print raw output of httpsget */
 	printf("%s", chunk.memory);
+	
 	parseJson();
 	free(chunk.memory);
 	
@@ -145,24 +145,24 @@ void parseJson() {
 	memmove(chunk.memory, chunk.memory+34+55+9, strlen(chunk.memory));
 	
 	char w[10] = "full";
-	int i=0,k=0,c,index;
+	int i = 0, k = 0, c, index;
 	
-	while(chunk.memory[i]!='\0') {
-		if(chunk.memory[i]==w[0]) {
-			k=1;
-			for(c=1;w[c]!='\0';c++) {
-				if(chunk.memory[i+c]!=w[c]) {
-					k=0;
+	while(chunk.memory[i] != '\0') {
+		if(chunk.memory[i] == w[0]) {
+			k = 1;
+			for(c = 1; w[c] != '\0'; c++) {
+				if(chunk.memory[i+c] != w[c]) {
+					k = 0;
 					break;
 				}
 			}
 		}
-		if(k==1) {
-			index=i;
+		if(k == 1) {
+			index = i;
 		}
 		
 		i++;
-		k=0;
+		k = 0;
 	}
 	
 	//printf (index);
