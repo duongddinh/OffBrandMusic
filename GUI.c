@@ -98,19 +98,12 @@ int main(int argc,char **argv) {
 }
 
  int main2(const gchar firstname[30], const gchar lastname[30]) {
- 	char url[60];
- 	char name[60];
- 	char genius[] = "https://api.genius.com/search?q=";
- 	strcpy(url, genius);
- 	char space[] = "%20";
+ 	char genius[60] = "https://api.genius.com/search?q=";
  	char geniusToken[] = "mXWeiTbMTOxwTP87bXlHJtTKcaam60Njvfb5OsR8XAHflIqFKvGEgGuAkXZ2dtkC";
- 	printf("Hello and welcome to the music finder thingy!\nPlease input the name of the artist you would like to view...\n");
- 	//scanf("%s %s", firstname, lastname);
- 	strcpy(name, firstname);
- 	strcat(name, space);
- 	strcat(name, lastname);
- 	strcat(url, name);
- 	httpsGet(geniusToken, url);
+	strcat(genius, firstname);
+	strcat(genius, "%20");
+	strcat(genius, lastname);	
+	httpsGet(geniusToken, genius);
  	return 0;
 }
 
