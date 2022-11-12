@@ -12,7 +12,7 @@ struct MemoryStruct chunk;
 /* Function Prototypes */
 int main2(const gchar *, const gchar *);
 void parseJson();
-char* httpsGet(char token[], char url[]);
+void httpsGet(char token[], char url[]);
 
 struct MemoryStruct {
 	char *memory;
@@ -107,7 +107,7 @@ int main(int argc,char **argv) {
  	return 0;
 }
 
-char* httpsGet(char token[], char url[]) {
+void httpsGet(char token[], char url[]) {
 	CURL* curl;
 	CURLcode res;
 	char auth[100];
@@ -134,7 +134,7 @@ char* httpsGet(char token[], char url[]) {
 		res = curl_easy_perform(curl);
 	}
 	
-	printf(chunk.memory);
+	printf("%s", chunk.memory);
 	parseJson();
 	free(chunk.memory);
 	
