@@ -34,17 +34,17 @@ static void activate (GtkApplication* app, gpointer user_data)
  {
      GtkWidget *window;
      window = gtk_application_window_new (app);
-     gtk_window_set_title (GTK_WINDOW (window), "User Input");
+     gtk_window_set_title (GTK_WINDOW (window), "one of the top hits by artist");
      gtk_window_set_default_size (GTK_WINDOW (window), 500, 400);
 
      GtkWidget *showSearch; 
      firstnameLabel = gtk_label_new("First name:"); 
      firstnameEntry = gtk_entry_new(); 
      gtk_entry_set_placeholder_text(GTK_ENTRY(firstnameEntry),"first name");
-     GIcon *icon; 
-     GFile *path; 
+     //GIcon *icon; 
+     //GFile *path; 
      //path = g_file_new_for_path(""); 
-     icon = g_file_icon_new(path); 
+     //icon = g_file_icon_new(path); 
      //gtk_entry_set_icon_from_gicon(GTK_ENTRY(firstnameEntry),GTK_ENTRY_ICON_PRIMARY,icon); 
 
      lastnameLabel = gtk_label_new("Lastname:");
@@ -196,7 +196,7 @@ void parseJson() {
     }
         //printf (index);
     memmove(chunk.memory, chunk.memory+index+13 ,strlen(chunk.memory));
-    const char deli[] = "\"";  
+    const char deli[] = "\""; 
   
 
     token2 = strtok(chunk.memory, deli); 
