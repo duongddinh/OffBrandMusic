@@ -9,7 +9,8 @@ int testCode();
 GtkWidget *firstnameLabel, *firstnameEntry, *lastnameLabel, *lastnameEntry, *searchBtn, *grid;
   struct MemoryStruct chunk;
 
-
+int main2(const gchar *, const gchar *);
+void parseJson();
 
 
 struct MemoryStruct {
@@ -66,7 +67,7 @@ static void activate (GtkApplication* app, gpointer user_data)
 
      gtk_container_add(GTK_CONTAINER(window),box); 
      gtk_widget_show_all (window);
- } 
+ }
 
 
 
@@ -102,14 +103,14 @@ WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp)
 
      GtkApplication *app;
      int status;
-     app = gtk_application_new ("xyz.null0verflow", G_APPLICATION_FLAGS_NONE);
+     app = gtk_application_new ("xyz.null0verflow", G_APPLICATION_DEFAULT_FLAGS);
      g_signal_connect (app, "activate", G_CALLBACK(activate), NULL);
      status = g_application_run(G_APPLICATION(app), argc, argv);
      g_object_unref (app);
      return status;
  }
 
- int main2(char firstname[30], char lastname[30])
+ int main2(const gchar firstname[30], const gchar lastname[30])
 {
     char url[60];
     char name[60];
