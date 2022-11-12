@@ -3,7 +3,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stddef.h>
-#include "mjson.h"
 
 char* httpsGet(char token[], char url[]);
 int testCode();
@@ -15,13 +14,6 @@ struct MemoryStruct {
   size_t size;
 };
 
-struct my_object {
-    char text[100];
-    char flag[100];
-    int count;
-    char next[100];
-    char next2[100];
-};
 
 
 /* 
@@ -30,20 +22,6 @@ struct my_object_list {
     struct my_object list[100];
 };
 */
-int json_myobj_read(const char *buf, struct my_object *myobj) {
-
-       const struct json_attr_t json_attrs[] = {
-         {"annotation_count", t_integer, .addr.integer = &(myobj->count),
-                    .len = sizeof(myobj->count)},
-                     {"api_path", t_string, .addr.string = &(myobj->next),
-                    .len = sizeof(myobj->next)},
-        {"artist_names", t_string, .addr.string = myobj->text,
-                .len = sizeof(myobj->text)},
-       {"full_title", t_string, .addr.string = &(myobj->flag), 
-                   .len = sizeof(myobj->flag)},
-                   {NULL},
-        
-    };
 
 
 /*
@@ -67,9 +45,6 @@ int json_myobj_read(const char *buf, struct my_object *myobj) {
     };*/
 
     //memset(obj_list, '\0', sizeof(*obj_list));
-
-    return json_read_object(buf, json_attrs, NULL);
-}
 
  
  
