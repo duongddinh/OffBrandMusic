@@ -7,6 +7,7 @@
 int testCode();
 char *token2;
 char *token3;
+    char genioslink[200] = "https://genius.com";
 
 GtkWidget *firstnameLabel, *firstnameEntry, *lastnameLabel, *lastnameEntry, *searchBtn, *grid, *showLyricBtn;
 struct MemoryStruct chunk;
@@ -171,7 +172,6 @@ void httpsGet(char token[], char url[]) {
 
 
 void getLyric() {
-    char genioslink[200] = "https://genius.com";
     char url[20];
     char nexttt[200];
 //char *memory3 = chunk.memory;
