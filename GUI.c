@@ -6,12 +6,15 @@
 /* Variable Declarations */
 int testCode();
 char *token2;
+char *token3;
+
 GtkWidget *firstnameLabel, *firstnameEntry, *lastnameLabel, *lastnameEntry, *searchBtn, *grid, *showLyricBtn;
 struct MemoryStruct chunk;
 
 /* Function Prototypes */
 int main2(const gchar *, const gchar *);
 void parseJson();
+void getLyric() ;
 void httpsGet(char token[], char url[]);
 
 struct MemoryStruct {
@@ -32,6 +35,7 @@ void search_button_clicked(GtkWidget *wid,gpointer data) {
 }
 
 void Lyric_button_clicked(GtkWidget *wid,gpointer data) {
+  
    GtkApplication* app2 = gtk_application_new ("xyz.null0verflow", G_APPLICATION_DEFAULT_FLAGS);
     GtkWidget *window2;
     window2 = gtk_application_window_new (app2);
@@ -158,20 +162,71 @@ void httpsGet(char token[], char url[]) {
         res = curl_easy_perform(curl);
     }
     
-    printf("%s", chunk.memory);
+  //  printf("%s", chunk.memory);
     parseJson();
     free(chunk.memory);
     
     curl_easy_cleanup(curl);
 }
 
+
+void getLyric() {
+    char genioslink[200] = "https://genius.com";
+    char url[20];
+    char nexttt[200];
+//char *memory3 = chunk.memory;
+char *memory2 = strdup(chunk.memory);
+//strcpy(memory2, chunk.memory);
+
+    char w2[10] = "\"path";  
+
+int totall = 0;
+   int i2=0,k2=0,c2,index2;
+ const char deli[] = "\""; 
+
+
+
+    int clol2 = 0;
+
+           while(memory2[i2]!='\0' && clol2 == 0)
+    {
+        
+        if(memory2[i2]==w2[0])
+        {
+            k2=1;
+            for(c2=1;w2[c2]!='\0';c2++)
+            {
+                if(memory2[i2+c2]!=w2[c2])
+                {
+                 k2=0;
+                 break;
+                }
+            }
+        
+        }
+        if(k2==1)
+        {
+                index2=i2;
+                clol2 = 1;
+        }
+        i2++;
+        k2=0;    
+    }
+        memmove(memory2, memory2+index2+8 ,strlen(memory2));
+           //char *token3;
+      token3=  strtok(memory2, deli); 
+strcat(genioslink,token3);
+      printf("%s\n", genioslink);
+
+}
 void parseJson() {
     memmove(chunk.memory, chunk.memory+34+55+9, strlen(chunk.memory));
-    
+      getLyric() ;
+
     char w[10] = "full";
     int i=0,k=0,c,index;
-    
-    while(chunk.memory[i]!='\0') {
+    int clol=0;
+    while(chunk.memory[i]!='\0' && clol == 0) {
         if(chunk.memory[i]==w[0]) {
             k=1;
             for(c=1;w[c]!='\0';c++) {
@@ -183,6 +238,7 @@ void parseJson() {
         }
         if(k==1) {
             index=i;
+            clol=1;
         }
         
         i++;
