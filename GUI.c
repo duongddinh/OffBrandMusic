@@ -1,7 +1,9 @@
+#define _GNU_SOURCE
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include <curl/curl.h>
 #include <string.h>
+#include <stdlib.h>
 
 /* Variable Declarations */
 int testCode();
@@ -23,6 +25,23 @@ struct MemoryStruct {
     size_t size;
 };
 
+void open_website_part(char* i) {
+    char *cmd;
+    #ifdef  __linux__
+    asprintf(&cmd, "xdg-open %s", i);
+    system(cmd);
+    #elif __APPLE__
+    asprintf(&cmd, "OPEN %s", i);
+    system(cmd);
+    #elif _WIN32
+    asprintf(&cmd, "START %s", i);
+    system(cmd);
+    #endif
+
+    free(cmd);
+}
+
+
 void search_button_clicked(GtkWidget *wid,gpointer data) {
     const gchar *searchData = gtk_entry_get_text(GTK_ENTRY(firstnameEntry));
     const gchar *searchData2 = gtk_entry_get_text(GTK_ENTRY(lastnameEntry));
@@ -36,8 +55,10 @@ void search_button_clicked(GtkWidget *wid,gpointer data) {
 }
 
 void Lyric_button_clicked(GtkWidget *wid,gpointer data) {
-  
-   GtkApplication* app2 = gtk_application_new ("xyz.null0verflow", G_APPLICATION_DEFAULT_FLAGS);
+   open_website_part(genioslink);
+    GtkApplication* app2 = gtk_application_new ("xyz.null0verflow", G_APPLICATION_DEFAULT_FLAGS);
+    g_signal_connect (app2, "activate", G_CALLBACK(NULL), NULL);
+
     GtkWidget *window2;
     window2 = gtk_application_window_new (app2);
     gtk_window_set_title (GTK_WINDOW (window2), "Lyric");
@@ -46,6 +67,7 @@ void Lyric_button_clicked(GtkWidget *wid,gpointer data) {
     box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL,20);
     gtk_container_add(GTK_CONTAINER(window2),box2);
     gtk_widget_show_all (window2);
+
 }
 
 static void activate (GtkApplication* app, gpointer user_data) {
