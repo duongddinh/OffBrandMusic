@@ -9,6 +9,7 @@
 int testCode();
 char *token2;
 char *token3;
+char *finalest;
     char genioslink[200] = "https://genius.com";
 
 GtkWidget *firstnameLabel, *firstnameEntry, *lastnameLabel, *lastnameEntry, *searchBtn, *grid, *showLyricBtn;
@@ -29,17 +30,17 @@ void open_website_part(char* i) {
     char *cmd;
     #ifdef  __linux__
     //asprintf(&cmd, "xdg-open %s", i);
-    char *tokentest = strdup(token2);
+    char *tokentest = strdup(finalest);
     asprintf(&cmd, "python3 lyricart.py \"%s\"", tokentest);
     system(cmd);
     #elif __APPLE__
     //asprintf(&cmd, "OPEN %s", i);
-    char *tokentest = strdup(token2);
+    char *tokentest = strdup(finalest);
     asprintf(&cmd, "python3 lyricart.py \"%s\"", tokentest);
     system(cmd);
     #elif __WIN32__
     //asprintf(&cmd, "START %s", i);
-    char *tokentest = strdup(token2);
+    char *tokentest = strdup(finalest);
     asprintf(&cmd, "python3 lyricart.py \"%s\"", tokentest);
     system(cmd);
     #endif
@@ -55,13 +56,15 @@ void search_button_clicked(GtkWidget *wid,gpointer data) {
 
     main2(searchData, searchData2);
     
-    gtk_label_set_text(GTK_LABEL(data), token2);
+    gtk_label_set_text(GTK_LABEL(data), finalest);
     gtk_entry_set_text(GTK_ENTRY(firstnameEntry),"");
     gtk_entry_set_text(GTK_ENTRY(lastnameEntry),"");
 }
 
 void Lyric_button_clicked(GtkWidget *wid,gpointer data) {
-        printf("%s", token2);
+        char *tokentest = strdup(finalest);
+
+        printf("%s", tokentest);
 
    open_website_part(genioslink);
     /*
@@ -282,4 +285,5 @@ void parseJson() {
     const char deli[] = "\""; 
     
     token2 = strtok(chunk.memory, deli); 
+    finalest = strdup(token2);
 }
