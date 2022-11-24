@@ -1,7 +1,6 @@
 To compile file, do
 ```
 pip install lyrics-extractor
-
 ```
 ```
 gcc name.c -o name `pkg-config --cflags --libs gtk+-3.0` -lcurl
@@ -12,7 +11,6 @@ get python prerequiritories for macOS only if you are using linux, google how to
 ```
 brew install python-tk
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-
 ```
 
 ~Working on python implementation, compile file line should be (DONT DO THIS)~
