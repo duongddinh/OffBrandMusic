@@ -4,6 +4,8 @@
 #include <curl/curl.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
+
 
 /* Variable Declarations */
 int testCode();
@@ -26,25 +28,41 @@ struct MemoryStruct {
     size_t size;
 };
 
+bool file_exists(const char *filename)
+{
+    FILE *fp = fopen(filename, "r");
+    bool is_exist = false;
+    if (fp != NULL)
+    {
+        is_exist = true;
+        fclose(fp); // close the file
+    }
+    return is_exist;
+}
+
 void open_website_part(char* i) {
-    char *cmd;
+
+    char *filename = "lyricart.py";
+            char *cmd;
+
+    if (file_exists(filename)){
+            char *tokentest = strdup(finalest);
+            asprintf(&cmd, "python3 lyricart.py \"%s\"", tokentest);
+            system(cmd);
+
+        }
+    else {
     #ifdef  __linux__
-    //asprintf(&cmd, "xdg-open %s", i);
-    char *tokentest = strdup(finalest);
-    asprintf(&cmd, "python3 lyricart.py \"%s\"", tokentest);
+    asprintf(&cmd, "xdg-open %s", i);
     system(cmd);
     #elif __APPLE__
-    //asprintf(&cmd, "OPEN %s", i);
-    char *tokentest = strdup(finalest);
-    asprintf(&cmd, "python3 lyricart.py \"%s\"", tokentest);
+    asprintf(&cmd, "OPEN %s", i);
     system(cmd);
     #elif __WIN32__
-    //asprintf(&cmd, "START %s", i);
-    char *tokentest = strdup(finalest);
-    asprintf(&cmd, "python3 lyricart.py \"%s\"", tokentest);
+    asprintf(&cmd, "START %s", i);
     system(cmd);
     #endif
-
+}
     free(cmd);
 }
 
@@ -60,6 +78,8 @@ void search_button_clicked(GtkWidget *wid,gpointer data) {
     gtk_entry_set_text(GTK_ENTRY(firstnameEntry),"");
     gtk_entry_set_text(GTK_ENTRY(lastnameEntry),"");
 }
+
+
 
 void Lyric_button_clicked(GtkWidget *wid,gpointer data) {
         char *tokentest = strdup(finalest);
