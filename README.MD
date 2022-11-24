@@ -1,5 +1,7 @@
 To compile file, do
 ```
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python3 get-pip.py
 pip install lyrics-extractor
 ```
 ```
@@ -10,7 +12,7 @@ get python prerequiritories for macOS only if you are using linux, google how to
 
 ```
 brew install python-tk
-curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+
 ```
 
 ~Working on python implementation, compile file line should be (DONT DO THIS)~
