@@ -2,6 +2,17 @@ To compile file, do
 ```
 gcc name.c -o name `pkg-config --cflags --libs gtk+-3.0` -lcurl
 ```
+
+get python prerequiritories
+
+```
+brew install python-tk
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+
+pip install lyrics-extractor
+
+```
+
 Working on python implementation, compile file line should be
 ```
 gcc GUI.c -o test `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --libs -- python3` -lcurl
