@@ -15,7 +15,7 @@ curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 
 ```
 
-Working on python implementation, compile file line should be
+~Working on python implementation, compile file line should be (DONT DO THIS)~
 ```
 gcc GUI.c -o test `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --libs -- python3` -lcurl
 ```
