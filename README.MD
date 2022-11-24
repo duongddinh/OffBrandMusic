@@ -3,7 +3,7 @@ To compile file, do
 gcc name.c -o name `pkg-config --cflags --libs gtk+-3.0` -lcurl
 ```
 
-get python prerequiritories
+get python prerequiritories for macOS only if you are using linux, google how to get pip and python-tk
 
 ```
 brew install python-tk
