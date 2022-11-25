@@ -31,7 +31,7 @@ gcc GUI.c -o test `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --l
 
 | Status      | Description | Contributor(s)|
 | ----------- | ----------- |---------------|
-| [DONE]       | Build basis of curl to grab Json from Genius (Nathan)       | Nathan |
+| [DONE]       | Build basis of curl to grab Json from Genius      | Nathan |
 | [DONE]   |  Build basis of Gtk GUI        | Duong Dinh |
 | [NOT DONE] | Build advanced gtk GUI | No contributor|
 |[DONE] |Build JSON parser to get 1 song name |Duong Dinh|
