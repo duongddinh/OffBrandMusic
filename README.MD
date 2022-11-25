@@ -35,13 +35,17 @@ gcc GUI.c -o test `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --l
 | [DONE]   |  Build basis of Gtk GUI        | Duong Dinh |
 | [NOT DONE] | Build advanced gtk GUI | No contributor|
 |[DONE] |Build JSON parser to get 1 song name |Duong Dinh|
+|[DONE] | Display one song to GUI |Duong Dinh|
 |[IN PROGRESS] |Build JSON parser to get multiple songs' name |Duong Dinh|
-|[DONE] | Build JSON parser to get link to the lyric | Duong Dinh|
+|[NOT DONE] | Display multiple songs to GUI |No Contributor|
+|[DONE] | Build JSON parser to get link to the song's lyric | Duong Dinh|
+|[DONE] | Open default browser with link to the song's lyric | Duong Dinh|
 | [NOT DONE] |Build JSON parser to get link to all the lyric |No contributor|
 |[DONE] |Python to get full song lyric |Alanah, Duong Dinh |
-| [NOT DONE] |Music player | no contributor|
+| [DONE] | connect Python with C | Duong Dinh |
 | [NOT DONE] | Data Structore | No contributor | 
 |[NOT DONE]| DEBUG |All members|
+| [NOT DONE] |Music player | no contributor|
 | [IN PROGRESS] | project meets requirements| null |
 
 
