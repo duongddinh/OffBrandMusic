@@ -20,7 +20,8 @@ def get_lyrics():
 # object of tkinter
 # and background set to light grey
 master = Tk()
-master.configure(bg='light grey')
+master.title("Lyric")
+master.configure(bg='white')
 
 # Variable Classes in tkinter
 result = StringVar()
@@ -29,14 +30,14 @@ result = StringVar()
 # name using widget Label
 
 
-Label(master, text="Result :",
-      bg="light grey").grid(row=3, sticky=W)
+Label(master, text="", fg="black",
+      bg="white").grid(row=3, sticky=W)
 
 
 # Creating label for class variable
 # name using widget Entry
-Label(master, text="", textvariable=result,
-      bg="light grey").grid(row=3, column=1, sticky=W)
+Label(master, text="", fg="black", textvariable=result,
+      bg="white").grid(row=3, column=1, sticky=W)
 
 # creating a button using the widget
 
