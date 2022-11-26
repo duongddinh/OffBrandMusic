@@ -45,7 +45,7 @@ gcc GUI.c -o test `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --l
 | [DONE] | connect Python with C | Duong Dinh |
 | [NOT DONE] | Data Structore | No contributor | 
 |[NOT DONE]| DEBUG |All members|
-| [IN PROGRESS |Music player | Nathan |
+| [IN PROGRESS] |Music player | Nathan |
 | [IN PROGRESS] | project meets requirements| null |
 
 
