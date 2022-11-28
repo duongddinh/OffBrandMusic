@@ -40,7 +40,7 @@ gcc GUI.c -o test `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --l
 |[NOT DONE] | Display multiple songs to GUI |No Contributor|
 |[DONE] | Build JSON parser to get link to the song's lyric | Duong Dinh|
 |[DONE] | Open default browser with link to the song's lyric | Duong Dinh|
-| [NOT DONE] |Build JSON parser to get link to all the lyric |No contributor|
+| [DONE] |Build JSON parser to get link to all the lyric | Nathan Murphy |
 |[DONE] |Python to get full song lyric |Alanah, Duong Dinh |
 | [DONE] | connect Python with C | Duong Dinh |
 | [DONE] | Data Structure | Nathan Murphy | 
