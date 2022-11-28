@@ -43,7 +43,7 @@ gcc GUI.c -o test `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --l
 | [NOT DONE] |Build JSON parser to get link to all the lyric |No contributor|
 |[DONE] |Python to get full song lyric |Alanah, Duong Dinh |
 | [DONE] | connect Python with C | Duong Dinh |
-| [IN PROGRESS] | Data Structore | Nathan Murphy | 
+| [DONE] | Data Structure | Nathan Murphy | 
 |[NOT DONE]| DEBUG |All members|
 | [IN PROGRESS] |Music player | Nathan Murphy |
 | [IN PROGRESS] | project meets requirements| null |
