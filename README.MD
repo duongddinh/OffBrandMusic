@@ -31,7 +31,7 @@ gcc GUI.c -o test `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --l
 
 | Status      | Description | Contributor(s)|
 | ----------- | ----------- |---------------|
-| [DONE]       | Build basis of curl to grab Json from Genius      | Nathan |
+| [DONE]       | Build basis of curl to grab Json from Genius      | Nathan Murphy |
 | [DONE]   |  Build basis of Gtk GUI        | Duong Dinh |
 | [NOT DONE] | Build advanced gtk GUI | No contributor|
 |[DONE] |Build JSON parser to get 1 song name |Duong Dinh|
@@ -43,9 +43,9 @@ gcc GUI.c -o test `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --l
 | [NOT DONE] |Build JSON parser to get link to all the lyric |No contributor|
 |[DONE] |Python to get full song lyric |Alanah, Duong Dinh |
 | [DONE] | connect Python with C | Duong Dinh |
-| [NOT DONE] | Data Structore | No contributor | 
+| [IN PROGRESS] | Data Structore | Nathan Murphy | 
 |[NOT DONE]| DEBUG |All members|
-| [IN PROGRESS] |Music player | Nathan |
+| [IN PROGRESS] |Music player | Nathan Murphy |
 | [IN PROGRESS] | project meets requirements| null |
 
 
