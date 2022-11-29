@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-
 /* Variable Declarations */
 int testCode();
 char *token2;
@@ -14,7 +13,7 @@ char *token3;
 char *finalest;
     char genioslink[200] = "https://genius.com";
 
-GtkWidget *firstnameLabel, *firstnameEntry, *lastnameLabel, *lastnameEntry, *searchBtn, *grid, *showLyricBtn;
+GtkWidget *firstnameLabel, *firstnameEntry, *lastnameLabel, *lastnameEntry, *searchBtn, *grid, *showLyricBtn, *showLyricBtn1,*showLyricBtn2;
 struct MemoryStruct chunk;
 
 /* Function Prototypes */
@@ -40,14 +39,14 @@ bool file_exists(const char *filename)
     return is_exist;
 }
 
-void open_website_part(char* i) {
+void open_website_part(char* i, char *songname) {
 
     char *filename = "lyricart.py";
             char *cmd;
 
     if (file_exists(filename)){
             char *tokentest = strdup(finalest);
-            asprintf(&cmd, "python3 lyricart.py \"%s\"", tokentest);
+            asprintf(&cmd, "python3 lyricart.py \"%s\"", songname);
             system(cmd);
 
         }
@@ -70,13 +69,35 @@ void open_website_part(char* i) {
 void search_button_clicked(GtkWidget *wid,gpointer data) {
     const gchar *searchData = gtk_entry_get_text(GTK_ENTRY(firstnameEntry));
     const gchar *searchData2 = gtk_entry_get_text(GTK_ENTRY(lastnameEntry));
-            gtk_widget_show(showLyricBtn);
+    gtk_widget_show(showLyricBtn2);
+    gtk_widget_show(showLyricBtn1);
+    gtk_widget_show(showLyricBtn);
 
     main2(searchData, searchData2);
     
-    gtk_label_set_text(GTK_LABEL(data), finalest);
+    gtk_label_set_text(GTK_LABEL(data), "Click on each song to see the lyric");
+
+    gtk_button_set_label(GTK_BUTTON(showLyricBtn), finalest);
+    gtk_button_set_label(GTK_BUTTON(showLyricBtn1), finalest);
+    gtk_button_set_label(GTK_BUTTON(showLyricBtn2), finalest);
+
     gtk_entry_set_text(GTK_ENTRY(firstnameEntry),"");
     gtk_entry_set_text(GTK_ENTRY(lastnameEntry),"");
+     
+     /*
+    GtkApplication* app2 = gtk_application_new ("xyz.null0verflow", G_APPLICATION_DEFAULT_FLAGS);
+    g_signal_connect (app2, "activate", G_CALLBACK(NULL), NULL);
+
+    GtkWidget *window2;
+    window2 = gtk_application_window_new (app2);
+    gtk_window_set_title (GTK_WINDOW (window2), "Lyric");
+    gtk_window_set_default_size (GTK_WINDOW (window2), 250, 600);
+    GtkWidget *box2; 
+    box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL,20);
+    gtk_container_add(GTK_CONTAINER(window2),box2);
+    gtk_widget_show_all (window2);
+    */
+
 }
 
 
@@ -84,9 +105,55 @@ void search_button_clicked(GtkWidget *wid,gpointer data) {
 void Lyric_button_clicked(GtkWidget *wid,gpointer data) {
         char *tokentest = strdup(finalest);
 
-        printf("%s", tokentest);
+       printf("%s", tokentest);
+       gchar *text = gtk_button_get_label (showLyricBtn);
 
-   open_website_part(genioslink);
+       open_website_part(genioslink, text);
+    /*
+    GtkApplication* app2 = gtk_application_new ("xyz.null0verflow", G_APPLICATION_DEFAULT_FLAGS);
+    g_signal_connect (app2, "activate", G_CALLBACK(NULL), NULL);
+
+    GtkWidget *window2;
+    window2 = gtk_application_window_new (app2);
+    gtk_window_set_title (GTK_WINDOW (window2), "Lyric");
+    gtk_window_set_default_size (GTK_WINDOW (window2), 250, 600);
+    GtkWidget *box2; 
+    box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL,20);
+    gtk_container_add(GTK_CONTAINER(window2),box2);
+    gtk_widget_show_all (window2);
+    */
+
+}
+
+void Lyric1_button_clicked(GtkWidget *wid,gpointer data) {
+        char *tokentest = strdup(finalest);
+
+       printf("%s", tokentest);
+       gchar *text = gtk_button_get_label (showLyricBtn1);
+
+       open_website_part(genioslink, text);
+    /*
+    GtkApplication* app2 = gtk_application_new ("xyz.null0verflow", G_APPLICATION_DEFAULT_FLAGS);
+    g_signal_connect (app2, "activate", G_CALLBACK(NULL), NULL);
+
+    GtkWidget *window2;
+    window2 = gtk_application_window_new (app2);
+    gtk_window_set_title (GTK_WINDOW (window2), "Lyric");
+    gtk_window_set_default_size (GTK_WINDOW (window2), 250, 600);
+    GtkWidget *box2; 
+    box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL,20);
+    gtk_container_add(GTK_CONTAINER(window2),box2);
+    gtk_widget_show_all (window2);
+    */
+
+}
+void Lyric2_button_clicked(GtkWidget *wid,gpointer data) {
+        char *tokentest = strdup(finalest);
+
+       printf("%s", tokentest);
+       gchar *text = gtk_button_get_label (showLyricBtn2);
+
+       open_website_part(genioslink, text);
     /*
     GtkApplication* app2 = gtk_application_new ("xyz.null0verflow", G_APPLICATION_DEFAULT_FLAGS);
     g_signal_connect (app2, "activate", G_CALLBACK(NULL), NULL);
@@ -107,7 +174,7 @@ static void activate (GtkApplication* app, gpointer user_data) {
     GtkWidget *window;
     window = gtk_application_window_new (app);
     gtk_window_set_title (GTK_WINDOW (window), "one of the top hits by artist");
-    gtk_window_set_default_size (GTK_WINDOW (window), 500, 400);
+    gtk_window_set_default_size (GTK_WINDOW (window), 600, 500);
     
     GtkWidget *showSearch;
     firstnameLabel = gtk_label_new("First name:");
@@ -126,12 +193,17 @@ static void activate (GtkApplication* app, gpointer user_data) {
     searchBtn = gtk_button_new_with_label("search");
 
     showLyricBtn = gtk_button_new_with_label("Show Lyric");
+    showLyricBtn1 = gtk_button_new_with_label("Show Lyric");
+    showLyricBtn2 = gtk_button_new_with_label("Show Lyric");
 
     showSearch = gtk_label_new("");
     
     g_signal_connect(searchBtn,"clicked",G_CALLBACK(search_button_clicked),showSearch);
 
     g_signal_connect(showLyricBtn,"clicked",G_CALLBACK(Lyric_button_clicked),showSearch);
+   
+    g_signal_connect(showLyricBtn1,"clicked",G_CALLBACK(Lyric1_button_clicked),showSearch);
+    g_signal_connect(showLyricBtn2,"clicked",G_CALLBACK(Lyric2_button_clicked),showSearch);
 
     
     GtkWidget *box; box = gtk_box_new(GTK_ORIENTATION_VERTICAL,20);
@@ -144,10 +216,15 @@ static void activate (GtkApplication* app, gpointer user_data) {
 
     gtk_box_pack_start(GTK_BOX(box),showSearch,FALSE,FALSE,0);
     gtk_box_pack_start(GTK_BOX(box),showLyricBtn,FALSE,FALSE,0);
+    gtk_box_pack_start(GTK_BOX(box),showLyricBtn1,FALSE,FALSE,0);
+    gtk_box_pack_start(GTK_BOX(box),showLyricBtn2,FALSE,FALSE,0);
 
     gtk_container_add(GTK_CONTAINER(window),box);
     gtk_widget_show_all (window);
         gtk_widget_hide(showLyricBtn);
+                gtk_widget_hide(showLyricBtn1);
+        gtk_widget_hide(showLyricBtn2);
+
 
 }
 
@@ -156,8 +233,9 @@ static size_t
 WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp) {
     size_t realsize = size * nmemb;
     struct MemoryStruct *mem = (struct MemoryStruct *)userp;
-    
+   
     char *ptr = realloc(mem->memory, mem->size + realsize + 1);
+
     if(!ptr) {
         /* out of memory! */
         printf("not enough memory (realloc returned NULL)\n");
@@ -168,7 +246,7 @@ WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp) {
     memcpy(&(mem->memory[mem->size]), contents, realsize);
     mem->size += realsize;
     mem->memory[mem->size] = 0;
-    
+
     return realsize;
 }
 
@@ -190,6 +268,7 @@ int main(int argc,char **argv) {
     httpsGet(geniusToken, genius);
     return 0;
 }
+
 
 void httpsGet(char token[], char url[]) {
     CURL* curl;
@@ -220,6 +299,7 @@ void httpsGet(char token[], char url[]) {
     
   //  printf("%s", chunk.memory);
     parseJson();
+
     free(chunk.memory);
     
     curl_easy_cleanup(curl);
