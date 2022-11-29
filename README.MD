@@ -36,8 +36,8 @@ gcc GUI.c -o test `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --l
 | [NOT DONE] | Build advanced gtk GUI | No contributor|
 |[DONE] |Build JSON parser to get 1 song name |Duong Dinh|
 |[DONE] | Display one song to GUI |Duong Dinh|
-|[IN PROGRESS] |Build JSON parser to get multiple songs' name |Duong Dinh|
-|[NOT DONE] | Display multiple songs to GUI |No Contributor|
+|[DONE] |Build JSON parser to get multiple songs' name |Nathan Murphy|
+|[DONE] | Display multiple songs to GUI |Nathan Murphy, Duong Dinh|
 |[DONE] | Build JSON parser to get link to the song's lyric | Duong Dinh|
 |[DONE] | Open default browser with link to the song's lyric | Duong Dinh|
 | [DONE] |Build JSON parser to get link to all the lyric | Nathan Murphy |
@@ -46,6 +46,6 @@ gcc GUI.c -o test `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --l
 | [DONE] | Data Structure | Nathan Murphy | 
 |[NOT DONE]| DEBUG |All members|
 | [IN PROGRESS] |Music player | Nathan Murphy |
-| [IN PROGRESS] | project meets requirements| null |
+| [IN PROGRESS] | project meets requirements| YES |
 
 
