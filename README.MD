@@ -21,10 +21,9 @@ gcc GUI.c -o test `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --l
 ```
 ## TODO
 
-1. Array Struct needed or any sort of linked list
-2. memory mamagement (the current code right now has high chance of crashing because of bad code and memory allocation)
-3. Clean up code 
-4. Make the GUI a bit more intuitive 
+1. memory mamagement (the current code right now has high chance of crashing because of bad code and memory allocation)
+2. Clean up code 
+3. Make the GUI a bit more intuitive 
 4. Potentially play music
 
 # Road map
@@ -44,7 +43,7 @@ gcc GUI.c -o test `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --l
 |[DONE] |Python to get full song lyric |Alanah, Duong Dinh |
 | [DONE] | connect Python with C | Duong Dinh |
 | [DONE] | Data Structure | Nathan Murphy | 
-|[NOT DONE]| DEBUG |All members|
+|[NOT DONE]| DEBUG -- realloc at WriteMemoryCallback| null |
 | [IN PROGRESS] |Music player | Nathan Murphy |
 | [IN PROGRESS] | project meets requirements| YES |
 
