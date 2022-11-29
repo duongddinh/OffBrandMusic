@@ -44,6 +44,7 @@ gcc GUI.c -o test `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --l
 | [DONE] | Data Structure | Nathan Murphy | 
 |[DONE]| DEBUG -- realloc at WriteMemoryCallback| Nathan Murphy |
 | [IN PROGRESS] |Music player | Nathan Murphy |
+| [NOT DONE] |Clean up code and warnings | no contributor |
 | [IN PROGRESS] | project meets requirements| YES |
 
 
