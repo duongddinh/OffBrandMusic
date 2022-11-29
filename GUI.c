@@ -55,7 +55,7 @@ char *song3;
 char *lyric1;
 char *lyric2;
 char *lyric3;
-GtkWidget *firstnameLabel, *firstnameEntry, *lastnameLabel, *lastnameEntry, *searchBtn, *grid, *showLyricBtn, *showLyricBtn1, *showLyricBtn2;
+GtkWidget *firstnameLabel, *firstnameEntry, *lastnameLabel, *lastnameEntry, *searchBtn, *grid, *showLyricBtn, *showLyricBtn1, *showLyricBtn2, *playSongBtn, *playSongBtn1, *playSongBtn2;
 
 /* Function Prototypes */
 int main2(const gchar *, const gchar *);
@@ -111,12 +111,18 @@ void search_button_clicked(GtkWidget *wid,gpointer data) {
     gtk_widget_show(showLyricBtn2);
     gtk_widget_show(showLyricBtn1);
     gtk_widget_show(showLyricBtn);
+    gtk_widget_show(playSongBtn);
+    gtk_widget_show(playSongBtn1);
+    gtk_widget_show(playSongBtn2);
     main2(searchData, searchData2);
     
     gtk_label_set_text(GTK_LABEL(data), "Click on each song to see the lyric");
     gtk_button_set_label(GTK_BUTTON(showLyricBtn), song1);
     gtk_button_set_label(GTK_BUTTON(showLyricBtn1), song2);
     gtk_button_set_label(GTK_BUTTON(showLyricBtn2), song3);
+    gtk_button_set_label(GTK_BUTTON(playSongBtn), "Play");
+    gtk_button_set_label(GTK_BUTTON(playSongBtn1), "Play");
+    gtk_button_set_label(GTK_BUTTON(playSongBtn2), "Play");
     gtk_entry_set_text(GTK_ENTRY(firstnameEntry),"");
     gtk_entry_set_text(GTK_ENTRY(lastnameEntry),"");
 }
@@ -144,6 +150,18 @@ void Lyric_button_clicked(GtkWidget *wid,gpointer data) {
     */
 
 }
+void playSong(char* songname)
+{
+    char *filename = "pySong.py";
+            char *cmd;
+
+    if (file_exists(filename)){
+          //  char *tokentest = strdup(finalest);
+            asprintf(&cmd, "python3 pySong.py \"%s\"", songname);
+            system(cmd);
+
+        }
+}
 void Lyric1_button_clicked(GtkWidget *wid,gpointer data) {
   //  char *tokentest = strdup(finalest);
 
@@ -161,6 +179,18 @@ void Lyric2_button_clicked(GtkWidget *wid,gpointer data) {
     open_website_part(lyric3, text);
 }
 
+void play_button_clicked(GtkWidget *wid,gpointer data) {
+    playSong(song1);
+}
+
+void play1_button_clicked(GtkWidget *wid,gpointer data) {
+    playSong(song2);;
+}
+
+void play2_button_clicked(GtkWidget *wid,gpointer data) {
+
+    playSong(song3);
+}
 static void activate (GtkApplication* app, gpointer user_data) {
     GtkWidget *window;
     window = gtk_application_window_new (app);
@@ -186,6 +216,9 @@ static void activate (GtkApplication* app, gpointer user_data) {
     showLyricBtn = gtk_button_new_with_label("Show Lyric");
     showLyricBtn1 = gtk_button_new_with_label("Show Lyric");
     showLyricBtn2 = gtk_button_new_with_label("Show Lyric");
+    playSongBtn = gtk_button_new_with_label("Play");
+    playSongBtn1 = gtk_button_new_with_label("Play");
+    playSongBtn2 = gtk_button_new_with_label("Play");
 
     showSearch = gtk_label_new("");
     
@@ -194,27 +227,37 @@ static void activate (GtkApplication* app, gpointer user_data) {
     g_signal_connect(showLyricBtn,"clicked",G_CALLBACK(Lyric_button_clicked),showSearch);
     g_signal_connect(showLyricBtn1,"clicked",G_CALLBACK(Lyric1_button_clicked),showSearch);
     g_signal_connect(showLyricBtn2,"clicked",G_CALLBACK(Lyric2_button_clicked),showSearch);
+    g_signal_connect(playSongBtn,"clicked",G_CALLBACK(play_button_clicked),showSearch);
+    g_signal_connect(playSongBtn1,"clicked",G_CALLBACK(play1_button_clicked),showSearch);
+    g_signal_connect(playSongBtn2,"clicked",G_CALLBACK(play2_button_clicked),showSearch);
 
 
     
-    GtkWidget *box; box = gtk_box_new(GTK_ORIENTATION_VERTICAL,20);
+    GtkWidget *box;
+    box = gtk_box_new(GTK_ORIENTATION_VERTICAL,20);
     gtk_box_pack_start(GTK_BOX(box),firstnameLabel,FALSE,FALSE,0);
     gtk_box_pack_start(GTK_BOX(box),firstnameEntry,FALSE,FALSE,0);
     gtk_box_pack_start(GTK_BOX(box),lastnameLabel,FALSE,FALSE,0);
     gtk_box_pack_start(GTK_BOX(box),lastnameEntry,FALSE,FALSE,0);
     gtk_box_pack_start(GTK_BOX(box),searchBtn,FALSE,FALSE,0);
 
-
     gtk_box_pack_start(GTK_BOX(box),showSearch,FALSE,FALSE,0);
     gtk_box_pack_start(GTK_BOX(box),showLyricBtn,FALSE,FALSE,0);
     gtk_box_pack_start(GTK_BOX(box),showLyricBtn1,FALSE,FALSE,0);
     gtk_box_pack_start(GTK_BOX(box),showLyricBtn2,FALSE,FALSE,0);
+    gtk_box_pack_start(GTK_BOX(box),playSongBtn,FALSE,FALSE,0);
+    gtk_box_pack_start(GTK_BOX(box),playSongBtn1,FALSE,FALSE,0);
+    gtk_box_pack_start(GTK_BOX(box),playSongBtn2,FALSE,FALSE,0);
 
     gtk_container_add(GTK_CONTAINER(window),box);
     gtk_widget_show_all (window);
     gtk_widget_hide(showLyricBtn);
     gtk_widget_hide(showLyricBtn1);
     gtk_widget_hide(showLyricBtn2);
+    gtk_widget_hide(playSongBtn);
+    gtk_widget_hide(playSongBtn1);
+    gtk_widget_hide(playSongBtn2);
+
 
 }
 

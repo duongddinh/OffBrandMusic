@@ -2,6 +2,7 @@ import asyncio
 import sys
 import requests
 import vlc
+import time
 
 
 
@@ -23,7 +24,7 @@ def YoutubeLookup():
     json = str(response.text)
     splitting = json.split('"')
     youtubeID = splitting[87]
-    print(response.text)
+    #print(response.text)
 
 
 def YoutubeConvert():
@@ -36,27 +37,35 @@ def YoutubeConvert():
         "X-RapidAPI-Key": "f0e0bb49b8msh380d03d27aa5fc7p19f33ajsna47ae205484d",
         "X-RapidAPI-Host": "t-one-youtube-converter.p.rapidapi.com"
     }
-    response = requests.request("GET", url, headers=headers, params=querystring)
-    json = str(response.text)
-    split = json.split('"')
-    theURL = split[11]
-    ugh = theURL.split('\\')
-    s = ""
-    for i in ugh:
-        array.append(i)
-        Mp3URL = s.join(array)
-    print(response.text)
+    while(True):
+        response = requests.request("GET", url, headers=headers, params=querystring)
+        json = str(response.text)
+        split = json.split('"')
+        print(response.text)
+        try:
+            theURL = split[11]
+            ugh = theURL.split('\\')
+            s = ""
+            for i in ugh:
+                array.append(i)
+                Mp3URL = s.join(array)
+            print(Mp3URL)
+            #print(response.text)
+            break
+        except:
+            time.sleep(2)
 
-async def play():
+def play():
     p = vlc.MediaPlayer(Mp3URL)
     p.play()
+    time.sleep(30)
+
+def doSomething():
+    print('Hi')
 
 def main():
     YoutubeLookup()
     YoutubeConvert()
-    loop = asyncio.get_event_loop()
-    asyncio.ensure_future(play())
-    loop.run_forever()
-    loop.close()
+    play()
 
 main()
