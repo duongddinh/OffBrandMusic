@@ -11,6 +11,7 @@ struct MemoryStruct {
     char *memory;
     size_t size;
 };
+struct MemoryStruct chunk;
 struct SongStruct
 {
     struct SongStruct* next;
@@ -55,7 +56,6 @@ char *lyric1;
 char *lyric2;
 char *lyric3;
 GtkWidget *firstnameLabel, *firstnameEntry, *lastnameLabel, *lastnameEntry, *searchBtn, *grid, *showLyricBtn, *showLyricBtn1, *showLyricBtn2;
-struct MemoryStruct chunk;
 
 /* Function Prototypes */
 int main2(const gchar *, const gchar *);
@@ -105,8 +105,9 @@ void open_website_part(char* i, char *songname) {
 
 void search_button_clicked(GtkWidget *wid,gpointer data) {
     struct All* temp;
-    const gchar *searchData = gtk_entry_get_text(GTK_ENTRY(firstnameEntry));
-    const gchar *searchData2 = gtk_entry_get_text(GTK_ENTRY(lastnameEntry));
+    const gchar *searchData2, *searchData = NULL;
+    searchData = gtk_entry_get_text(GTK_ENTRY(firstnameEntry));
+    searchData2 = gtk_entry_get_text(GTK_ENTRY(lastnameEntry));
     gtk_widget_show(showLyricBtn2);
     gtk_widget_show(showLyricBtn1);
     gtk_widget_show(showLyricBtn);
@@ -830,17 +831,16 @@ void GrabSong()
 }
 
 void httpsGet(char token[], char url[]) {
-    struct SongStruct* temp;
-    struct SongStruct* head = NULL;
-    struct SongStruct* current;
+    printf("passes this bad boy");
     int count = 0;
-    CURL* curl;
+    CURL* curl = NULL;
     CURLcode res;
+    chunk.memory = malloc(1);
+    chunk.size = 0;
     char auth[100];
     curl = curl_easy_init();
     char authBLEH[] = "Authorization: Bearer ";
     strcpy(auth, authBLEH);
-    
     if (curl) {
         curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "GET");
         curl_easy_setopt(curl, CURLOPT_URL, url);
@@ -862,9 +862,10 @@ void httpsGet(char token[], char url[]) {
     GrabSong();
   //  printf("%s", chunk.memory);
    // parseJson();
-    free(chunk.memory);
+    //free(chunk.memory);
     
     curl_easy_cleanup(curl);
+    curl_global_cleanup();
 }
 
 /*
