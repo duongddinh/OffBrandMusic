@@ -24,6 +24,7 @@ gcc GUI.c -o test `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --l
 1. Clean up code 
 2. Make the GUI a bit more intuitive 
 3. Potentially play music
+4. No GUI mode where UI is just a terminal with terminal UI environment
 
 # Road map
 
@@ -45,6 +46,7 @@ gcc GUI.c -o test `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --l
 |[DONE]| DEBUG -- realloc at WriteMemoryCallback| Nathan Murphy |
 | [IN PROGRESS] |Music player | Nathan Murphy |
 | [NOT DONE] |Clean up code and warnings | no contributor |
+| [NOT DONE] |No GUI mode where UI is just a terminal with option | no contributor |
 | [IN PROGRESS] | project meets requirements| YES |
 
 
