@@ -21,10 +21,9 @@ gcc GUI.c -o test `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --l
 ```
 ## TODO
 
-1. memory mamagement (the current code right now has high chance of crashing because of bad code and memory allocation)
-2. Clean up code 
-3. Make the GUI a bit more intuitive 
-4. Potentially play music
+1. Clean up code 
+2. Make the GUI a bit more intuitive 
+3. Potentially play music
 
 # Road map
 
@@ -43,7 +42,7 @@ gcc GUI.c -o test `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --l
 |[DONE] |Python to get full song lyric |Alanah, Duong Dinh |
 | [DONE] | connect Python with C | Duong Dinh |
 | [DONE] | Data Structure | Nathan Murphy | 
-|[NOT DONE]| DEBUG -- realloc at WriteMemoryCallback| null |
+|[DONE]| DEBUG -- realloc at WriteMemoryCallback| Nathan Murphy |
 | [IN PROGRESS] |Music player | Nathan Murphy |
 | [IN PROGRESS] | project meets requirements| YES |
 
