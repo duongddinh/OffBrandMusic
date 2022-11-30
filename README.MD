@@ -45,9 +45,10 @@ gcc GUI.c -o test `pkg-config --cflags --libs gtk+-3.0` `pkg-config --cflags --l
 | [DONE] | connect Python with C | Duong Dinh |
 | [DONE] | Data Structure | Nathan Murphy | 
 |[DONE]| DEBUG -- realloc at WriteMemoryCallback| Nathan Murphy |
-| [IN PROGRESS] |Music player | Nathan Murphy |
+| [DONE] |Python Code For Playing Song | Aafant Shrestha / Nathan Murphy |
+| [DONE] |Music player | Nathan Murphy |
 | [NOT DONE] |Clean up code and warnings | no contributor |
-| [NOT DONE] |No GUI mode where UI is just a terminal with option | no contributor |
+| [IN PROGRESS] |No GUI mode where UI is just a terminal with option | Aafant Shrestha |
 | [IN PROGRESS] | project meets requirements| YES |
 
 
