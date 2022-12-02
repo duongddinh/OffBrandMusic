@@ -193,15 +193,10 @@ void play2_button_clicked(GtkWidget *wid,gpointer data) {
 }
 static void activate (GtkApplication* app, gpointer user_data) {
     GtkWidget *window;
-      GtkWidget *fixed;
-  fixed = gtk_fixed_new();
-
     window = gtk_application_window_new (app);
     gtk_window_set_title (GTK_WINDOW (window), "One of the top hits by artist");
-    gtk_window_set_default_size (GTK_WINDOW (window), 600, 400);
-
-
-
+    gtk_window_set_default_size (GTK_WINDOW (window), 600, 500);
+    
     GtkWidget *showSearch;
     firstnameLabel = gtk_label_new("First name:");
     firstnameEntry = gtk_entry_new();
@@ -225,8 +220,6 @@ static void activate (GtkApplication* app, gpointer user_data) {
     playSongBtn1 = gtk_button_new_with_label("Play");
     playSongBtn2 = gtk_button_new_with_label("Play");
 
-
-
     showSearch = gtk_label_new("");
     
     g_signal_connect(searchBtn,"clicked",G_CALLBACK(search_button_clicked),showSearch);
@@ -242,28 +235,21 @@ static void activate (GtkApplication* app, gpointer user_data) {
     
     GtkWidget *box;
     box = gtk_box_new(GTK_ORIENTATION_VERTICAL,20);
-    gtk_fixed_put(GTK_FIXED(fixed),firstnameLabel,30,20);
-    gtk_fixed_put(GTK_FIXED(fixed),firstnameEntry,100,10);
-    gtk_fixed_put(GTK_FIXED(fixed),lastnameLabel,30,60);
-    gtk_fixed_put(GTK_FIXED(fixed),lastnameEntry,100,50);
-    gtk_fixed_put(GTK_FIXED(fixed),searchBtn,200,100);
+    gtk_box_pack_start(GTK_BOX(box),firstnameLabel,FALSE,FALSE,0);
+    gtk_box_pack_start(GTK_BOX(box),firstnameEntry,FALSE,FALSE,0);
+    gtk_box_pack_start(GTK_BOX(box),lastnameLabel,FALSE,FALSE,0);
+    gtk_box_pack_start(GTK_BOX(box),lastnameEntry,FALSE,FALSE,0);
+    gtk_box_pack_start(GTK_BOX(box),searchBtn,FALSE,FALSE,0);
 
-    gtk_fixed_put(GTK_FIXED(fixed),showSearch,200,150);
+    gtk_box_pack_start(GTK_BOX(box),showSearch,FALSE,FALSE,0);
+    gtk_box_pack_start(GTK_BOX(box),showLyricBtn,FALSE,FALSE,0);
+    gtk_box_pack_start(GTK_BOX(box),showLyricBtn1,FALSE,FALSE,0);
+    gtk_box_pack_start(GTK_BOX(box),showLyricBtn2,FALSE,FALSE,0);
+    gtk_box_pack_start(GTK_BOX(box),playSongBtn,FALSE,FALSE,0);
+    gtk_box_pack_start(GTK_BOX(box),playSongBtn1,FALSE,FALSE,0);
+    gtk_box_pack_start(GTK_BOX(box),playSongBtn2,FALSE,FALSE,0);
 
-    gtk_fixed_put(GTK_FIXED(fixed),showLyricBtn,10,200);
-    gtk_fixed_put(GTK_FIXED(fixed),showLyricBtn1,10,250);
-    gtk_fixed_put(GTK_FIXED(fixed),showLyricBtn2,10,300);
-    gtk_fixed_put(GTK_FIXED(fixed),playSongBtn,500,200);
-    gtk_fixed_put(GTK_FIXED(fixed),playSongBtn1,500,250);
-    gtk_fixed_put(GTK_FIXED(fixed),playSongBtn2,500,300);
-    gtk_widget_set_size_request(playSongBtn, 80, 30);
-    gtk_widget_set_size_request(playSongBtn1, 80, 30);
-    gtk_widget_set_size_request(playSongBtn2,80, 30);
-
-    //gtk_container_add(GTK_CONTAINER(window),box);
-
-    gtk_container_add(GTK_CONTAINER(window), fixed);
-
+    gtk_container_add(GTK_CONTAINER(window),box);
     gtk_widget_show_all (window);
     gtk_widget_hide(showLyricBtn);
     gtk_widget_hide(showLyricBtn1);
@@ -295,14 +281,139 @@ WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp) {
     
     return realsize;
 }
+bool silent = false;
+int main(int argc,char *argv[]) {
+    if(argc == 1)
+    {
+        GtkApplication *app;
+        int status;
+        app = gtk_application_new ("xyz.null0verflow", G_APPLICATION_FLAGS_NONE);
+        g_signal_connect (app, "activate", G_CALLBACK(activate), NULL);
+        status = g_application_run(G_APPLICATION(app), argc, argv);
+        return status;
+    }
+    if(argc == 2)
+    {
+        silent = true;
+        char args[] = "silent";
+        if(!strcmp(argv[1], args))
+        {   
+            char name[50];
+            char *first;
+            char *last;
+            printf("\nHello and welcome to the C music player!\nPlease input artist name!\n");
+            gets(name);
+            int count = 0;
+            char* temp = strtok(name, " ");
+            while(temp != NULL)
+            {
+                if(count == 0)
+                {
+                    first = temp;
+                }
+                else
+                {
+                    last = temp;
+                }
+                temp = strtok(NULL, " ");
+                count+=1;
+            }
+            if(main2(first, last) == 0)
+            {
+                bool menu = true;
+                int choice1 = 0;
+                int choice2 = 0;
+                char* songChoice;
+                while(menu)
+                {
+                    printf("Your songs have been gathered!\nPlease insert the function value you'd like to execute.");
+                    printf("\n1. Show Lyrics\n2. Play Song\n");
+                    scanf("%d", &choice1);
+                    if(choice1 == 1)
+                    {
+                        bool menu2 = true;
+                        while(menu2)
+                        {
+                            printf("\nHere are your songs:\n1. %s\n2. %s\n3. %s\n", song1, song2, song3);
+                            scanf("%d", &choice2);
+                            if(choice2 == 1)
+                            {   
+                                menu2 = false;
+                                songChoice = song1;
+                                open_website_part(lyric1, song1);
+                                break;
+                            }
+                            if(choice2 == 2)
+                            {
+                                menu2 = false;
+                                songChoice = song2;
+                                open_website_part(lyric2, song2);
+                                break;
+                            }
+                            if(choice2 == 3)
+                            {
+                                menu2 = false;
+                                songChoice = song3;
+                                open_website_part(lyric3, song3);
+                                break;
+                            }
+                            else
+                            {
+                                printf("\nPlease insert a valid integer!\n");
+                            }
+                        }
+                        menu = false;
+                        break;
+                    }
+                    if(choice1 == 2)
+                    {
+                        bool menu2 = true;
+                        while(menu2)
+                        {
+                            printf("\nHere are your songs:\n1. %s\n2. %s\n3. %s\n", song1, song2, song3);
+                            scanf("%d", &choice2);
+                            if(choice2 == 1)
+                            {   
+                                menu2 = false;
+                                songChoice = song1;
+                                playSong(song1);
+                                break;
+                            }
+                            if(choice2 == 2)
+                            {
+                                menu2 = false;
+                                songChoice = song2;
+                                playSong(song2);
+                                break;
+                            }
+                            if(choice2 == 3)
+                            {
+                                menu2 = false;
+                                songChoice = song3;
+                                playSong(song3);
+                                break;
+                            }
+                            else
+                            {
+                                printf("\nPlease insert a valid integer!\n");
+                            }
+                        }
+                        menu = false;
+                        break;
+                    }
+                    else
+                    {
+                        printf("\nPlease insert a valid integer!\n");
+                    }
+                }
+            }
 
-int main(int argc,char **argv) {
-    GtkApplication *app;
-    int status;
-    app = gtk_application_new ("xyz.null0verflow", G_APPLICATION_FLAGS_NONE);
-    g_signal_connect (app, "activate", G_CALLBACK(activate), NULL);
-    status = g_application_run(G_APPLICATION(app), argc, argv);
-    return status;
+        }
+        else
+        {
+            printf("Uh oh! Looks like an invalid arguement has been entered!");
+        }
+    }
 }
 
  int main2(const gchar firstname[30], const gchar lastname[30]) {
@@ -345,32 +456,55 @@ void AllTraverse(struct All** head, struct All* temp)
     else
     {
         temp = (*head);
-        printf("%p", temp);
+        //printf("%p", temp);
         while (temp != NULL)
         {
-            if(count <= 2)
+            if(!silent)
             {
-                printf("\n\n########################################\n");
-                printf("Pointer Address: %p\n", temp);
-                printf("Artist Name: %s\n", temp->ArtistName);
-                printf("Song Title: %s\n", temp->Song);
-                printf("Lyric URL: %s\n", temp->LyricURL);
-                printf("########################################\n\n");// Print data of current node
-                if(count == 0){
-                    song1 = temp->Song;
-                    lyric1 = temp->LyricURL;
+                if(count <= 2)
+                {
+                    printf("\n\n########################################\n");
+                    printf("Pointer Address: %p\n", temp);
+                    printf("Artist Name: %s\n", temp->ArtistName);
+                    printf("Song Title: %s\n", temp->Song);
+                    printf("Lyric URL: %s\n", temp->LyricURL);
+                    printf("########################################\n\n");// Print data of current node
+                    if(count == 0){
+                        song1 = temp->Song;
+                        lyric1 = temp->LyricURL;
+                    }
+                    if(count == 1){
+                        song2 = temp->Song;
+                        lyric2 = temp->LyricURL;
+                    }
+                    if(count == 2){
+                        song3 = temp->Song;
+                        lyric3 = temp->LyricURL;
+                    }
                 }
-                if(count == 1){
-                    song2 = temp->Song;
-                    lyric2 = temp->LyricURL;
-                }
-                if(count == 2){
-                    song3 = temp->Song;
-                    lyric3 = temp->LyricURL;
-                }
-            }
             temp = temp->next;
             count+=1;
+            }
+            else
+            {
+                if(count <= 2)
+                {
+                    if(count == 0){
+                        song1 = temp->Song;
+                        lyric1 = temp->LyricURL;
+                    }
+                    if(count == 1){
+                        song2 = temp->Song;
+                        lyric2 = temp->LyricURL;
+                    }
+                    if(count == 2){
+                        song3 = temp->Song;
+                        lyric3 = temp->LyricURL;
+                    }
+                }
+            temp = temp->next;
+            count+=1;
+            }
         }
     }
 }
@@ -390,7 +524,7 @@ void CreateListNodeAll(struct All** head, struct All** temp, char song[], char a
 //Basic insert end node creation for ALL structure
 void InsertEndAll(struct All** head, struct All** temp, char song[], char artist[], char lyric[])
 {
-    printf("Inside insert end all function");
+    //printf("Inside insert end all function");
     struct All* end;
     *temp = malloc(sizeof(struct All));
     strcpy((*temp)->ArtistName, artist);
@@ -759,7 +893,7 @@ void GrabSong()
             char* song = strtok(NULL, brake);
 
             //Prints Song Title For Logs
-            printf("\nSONG IS: %s\n", song);
+            //printf("\nSONG IS: %s\n", song);
 
             //Looks to see if this is the first itteration, seeing is songTrack has been added. If not it creates the first list node, if so it returns false.
             if(SongTrack == 0)
@@ -795,7 +929,7 @@ void GrabSong()
             char* artist = strtok(NULL, brake);
 
             //Prints Artist Name For Logs
-            printf("\nARTIST IS: %s\n", artist);
+            //printf("\nARTIST IS: %s\n", artist);
 
             //Looks to see if this is the first itteration, seeing is ArtistTrack has been added. If not it creates the first list node, if so it returns false.
             if(ArtistTrack == 0)
@@ -818,7 +952,7 @@ void GrabSong()
         if(strcmp(between, ArtistTitle) == 0)
         {
             ArtistCount+=1;
-            printf("\nArtist is here, count is %d\n", ArtistCount);
+            //printf("\nArtist is here, count is %d\n", ArtistCount);
         }
         /*
 
@@ -833,7 +967,7 @@ void GrabSong()
             char* lyric = strtok(NULL, brake);
 
             //Prints Song Title For Logs
-            printf("\nLyric URL IS: %s\n", lyric);
+            //printf("\nLyric URL IS: %s\n", lyric);
 
             //Checks for the boolean of a NON-LYRIC URL
             if(!fakeLink)
@@ -861,7 +995,7 @@ void GrabSong()
         if(strcmp(between, LyricTitle) == 0)
         {
             LyricCount+=1;
-            printf("\nArtist is here, count is %d\n", LyricCount);
+            //printf("\nArtist is here, count is %d\n", LyricCount);
         }
 
         // For the love of god trying to get rid of non lyric urls but this is so insanely tedious UGHH
@@ -888,7 +1022,7 @@ void GrabSong()
 }
 
 void httpsGet(char token[], char url[]) {
-    printf("passes this bad boy");
+    //printf("passes this bad boy");
     int count = 0;
     CURL* curl = NULL;
     CURLcode res;
