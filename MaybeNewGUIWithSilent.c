@@ -274,26 +274,6 @@ static void activate (GtkApplication* app, gpointer user_data) {
 
 
 }
-                printf("########################################\n\n");// Print data of current node
-                if(count == 0){
-                    song1 = temp->Song;
-                    lyric1 = temp->LyricURL;
-                }
-                if(count == 1){
-                    song2 = temp->Song;
-                    lyric2 = temp->LyricURL;
-                }
-                if(count == 2){
-                    song3 = temp->Song;
-                    lyric3 = temp->LyricURL;
-                }
-            }
-            temp = temp->next;
-            count+=1;
-        }
-    }
-}
-
 static size_t
 
 WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp) {
