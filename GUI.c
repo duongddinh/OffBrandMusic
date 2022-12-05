@@ -193,10 +193,15 @@ void play2_button_clicked(GtkWidget *wid,gpointer data) {
 }
 static void activate (GtkApplication* app, gpointer user_data) {
     GtkWidget *window;
+      GtkWidget *fixed;
+  fixed = gtk_fixed_new();
+
     window = gtk_application_window_new (app);
     gtk_window_set_title (GTK_WINDOW (window), "One of the top hits by artist");
-    gtk_window_set_default_size (GTK_WINDOW (window), 600, 500);
-    
+    gtk_window_set_default_size (GTK_WINDOW (window), 600, 400);
+
+
+
     GtkWidget *showSearch;
     firstnameLabel = gtk_label_new("First name:");
     firstnameEntry = gtk_entry_new();
@@ -220,6 +225,8 @@ static void activate (GtkApplication* app, gpointer user_data) {
     playSongBtn1 = gtk_button_new_with_label("Play");
     playSongBtn2 = gtk_button_new_with_label("Play");
 
+
+
     showSearch = gtk_label_new("");
     
     g_signal_connect(searchBtn,"clicked",G_CALLBACK(search_button_clicked),showSearch);
@@ -235,21 +242,28 @@ static void activate (GtkApplication* app, gpointer user_data) {
     
     GtkWidget *box;
     box = gtk_box_new(GTK_ORIENTATION_VERTICAL,20);
-    gtk_box_pack_start(GTK_BOX(box),firstnameLabel,FALSE,FALSE,0);
-    gtk_box_pack_start(GTK_BOX(box),firstnameEntry,FALSE,FALSE,0);
-    gtk_box_pack_start(GTK_BOX(box),lastnameLabel,FALSE,FALSE,0);
-    gtk_box_pack_start(GTK_BOX(box),lastnameEntry,FALSE,FALSE,0);
-    gtk_box_pack_start(GTK_BOX(box),searchBtn,FALSE,FALSE,0);
+    gtk_fixed_put(GTK_FIXED(fixed),firstnameLabel,30,20);
+    gtk_fixed_put(GTK_FIXED(fixed),firstnameEntry,100,10);
+    gtk_fixed_put(GTK_FIXED(fixed),lastnameLabel,30,60);
+    gtk_fixed_put(GTK_FIXED(fixed),lastnameEntry,100,50);
+    gtk_fixed_put(GTK_FIXED(fixed),searchBtn,200,100);
 
-    gtk_box_pack_start(GTK_BOX(box),showSearch,FALSE,FALSE,0);
-    gtk_box_pack_start(GTK_BOX(box),showLyricBtn,FALSE,FALSE,0);
-    gtk_box_pack_start(GTK_BOX(box),showLyricBtn1,FALSE,FALSE,0);
-    gtk_box_pack_start(GTK_BOX(box),showLyricBtn2,FALSE,FALSE,0);
-    gtk_box_pack_start(GTK_BOX(box),playSongBtn,FALSE,FALSE,0);
-    gtk_box_pack_start(GTK_BOX(box),playSongBtn1,FALSE,FALSE,0);
-    gtk_box_pack_start(GTK_BOX(box),playSongBtn2,FALSE,FALSE,0);
+    gtk_fixed_put(GTK_FIXED(fixed),showSearch,200,150);
 
-    gtk_container_add(GTK_CONTAINER(window),box);
+    gtk_fixed_put(GTK_FIXED(fixed),showLyricBtn,10,200);
+    gtk_fixed_put(GTK_FIXED(fixed),showLyricBtn1,10,250);
+    gtk_fixed_put(GTK_FIXED(fixed),showLyricBtn2,10,300);
+    gtk_fixed_put(GTK_FIXED(fixed),playSongBtn,500,200);
+    gtk_fixed_put(GTK_FIXED(fixed),playSongBtn1,500,250);
+    gtk_fixed_put(GTK_FIXED(fixed),playSongBtn2,500,300);
+    gtk_widget_set_size_request(playSongBtn, 80, 30);
+    gtk_widget_set_size_request(playSongBtn1, 80, 30);
+    gtk_widget_set_size_request(playSongBtn2,80, 30);
+
+    //gtk_container_add(GTK_CONTAINER(window),box);
+
+    gtk_container_add(GTK_CONTAINER(window), fixed);
+
     gtk_widget_show_all (window);
     gtk_widget_hide(showLyricBtn);
     gtk_widget_hide(showLyricBtn1);
@@ -260,7 +274,6 @@ static void activate (GtkApplication* app, gpointer user_data) {
 
 
 }
-
 static size_t
 
 WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp) {
