@@ -1,9 +1,8 @@
 import asyncio
 import sys
-import time
-
 import requests
 import vlc
+import time
 
 
 
@@ -36,30 +35,51 @@ def YoutubeLookup():
     youtubeURL = "https://www.youtube.com/watch?v=" + youtubeID
     print(youtubeURL)
 
+
 def YoutubeConvert():
-    global Mp3URL
+    global Mp3URL, guid
     array = []
     youtubeURL = "https://www.youtube.com/watch?v=" + youtubeID
     url = "https://t-one-youtube-converter.p.rapidapi.com/api/v1/createProcess"
     querystring = {"url": youtubeURL, "format": "mp3", "responseFormat": "json", "stop": "30", "lang": "en"}
     headers = {
-        "X-RapidAPI-Key": "f0e0bb49b8msh380d03d27aa5fc7p19f33ajsna47ae205484d",
+        "X-RapidAPI-Key": "a0eb1f637bmsh09fa09d5335ca55p1fe5bajsn898b6666b127",
         "X-RapidAPI-Host": "t-one-youtube-converter.p.rapidapi.com"
     }
     response = requests.request("GET", url, headers=headers, params=querystring)
     json = str(response.text)
     split = json.split('"')
-    try:
-        theURL = split[11]
-        ugh = theURL.split('\\')
-        s = ""
-        for i in ugh:
-            array.append(i)
-            Mp3URL = s.join(array)
-        print(response.text)
-    except:
-        guid = split[3];
-        YoutubeStatus(guid)
+    #print(response.text)
+    good = False
+    count = 0
+    bad = False
+    tooMany = "You have exceeded the DAILY quota for Create Process on your current plan, BASIC. Upgrade your plan at https:\\/\\/rapidapi.com\\/tuttotone\\/api\\/t-one-youtube-converter"
+    for i in split:
+        if count == 2:
+            theURL = i;
+            break
+        if count == 1:
+            count+=1
+        if i == "file":
+            good = True
+            count+=1
+        if i == tooMany:
+            print("Sorry, the API usage has been exceeded for today!")
+            bad = True
+            break
+    if bad == False:
+        if good:
+            ugh = theURL.split('\\')
+            s = ""
+            for i in ugh:
+                array.append(i)
+                Mp3URL = s.join(array)
+            print(Mp3URL)
+            #print(response.text)
+        else:
+            guid = split[3]
+            YoutubeStatus(guid)
+
 def YoutubeStatus(guid):
     global Mp3URL
     array = []
@@ -69,29 +89,48 @@ def YoutubeStatus(guid):
     querystring = {"guid": guid, "responseFormat": "json", "lang": "it"}
 
     headers = {
-        "X-RapidAPI-Key": "f0e0bb49b8msh380d03d27aa5fc7p19f33ajsna47ae205484d",
+        "X-RapidAPI-Key": "a0eb1f637bmsh09fa09d5335ca55p1fe5bajsn898b6666b127",
         "X-RapidAPI-Host": "t-one-youtube-converter.p.rapidapi.com"
     }
 
     response = requests.request("GET", url, headers=headers, params=querystring)
     json = str(response.text)
     split = json.split('"')
-    theURL = split[11]
-    ugh = theURL.split('\\')
-    s = ""
-    for i in ugh:
-        array.append(i)
-        Mp3URL = s.join(array)
-    print(response.text)
-
+    count = 0
+    good = False
+    for i in split:
+        if count == 2:
+            theURL = i;
+            break
+        if count == 1:
+            count+=1
+        if i == "file":
+            good = True
+            count+=1
+    if good:
+        ugh = theURL.split('\\')
+        s = ""
+        for i in ugh:
+            array.append(i)
+            Mp3URL = s.join(array)
+        print(Mp3URL)
+    else:
+        #print("Have to repeat 1 more time!")
+        time.sleep(2)
+        YoutubeStatus(guid)
 
 
 def play():
-    p = vlc.MediaPlayer(Mp3URL)
-    p.play()
+    try:
+        p = vlc.MediaPlayer(Mp3URL)
+        p.play()
+        time.sleep(30)
+    except:
+        print("Have a good day!")
 
 def main():
     YoutubeLookup()
     YoutubeConvert()
     play()
+
 main()
