@@ -10,7 +10,7 @@ import vlc
 
 def YoutubeLookup():
     global youtubeID
-    name = "tossing and turning by arlie"
+    name = str(sys.argv[1])
     url = "https://youtube-v2.p.rapidapi.com/search/"
 
     querystring = {"query": name, "lang": "en", "country": "us"}
@@ -77,6 +77,7 @@ def YoutubeStatus(guid):
 
 
 def play():
+    print(Mp3URL)
     p = vlc.MediaPlayer(Mp3URL)
     p.play()
 
