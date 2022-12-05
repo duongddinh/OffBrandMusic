@@ -1,15 +1,16 @@
 import asyncio
 import sys
+import time
+
 import requests
 import vlc
-import time
 
 
 
 
 def YoutubeLookup():
     global youtubeID
-    name = str(sys.argv[1])
+    name = "I'm Still Standing By Elton John"
     url = "https://youtube-v2.p.rapidapi.com/search/"
 
     querystring = {"query": name, "lang": "en", "country": "us"}
@@ -23,9 +24,17 @@ def YoutubeLookup():
 
     json = str(response.text)
     splitting = json.split('"')
-    youtubeID = splitting[87]
-    #print(response.text)
-
+    number = 0
+    for s in splitting:
+        if number == 2:
+            youtubeID = s
+            break
+        if number == 1:
+            number+=1
+        if s == "video_id":
+            number +=1
+    youtubeURL = "https://www.youtube.com/watch?v=" + youtubeID
+    print(youtubeURL)
 
 def YoutubeConvert():
     global Mp3URL
@@ -37,35 +46,52 @@ def YoutubeConvert():
         "X-RapidAPI-Key": "f0e0bb49b8msh380d03d27aa5fc7p19f33ajsna47ae205484d",
         "X-RapidAPI-Host": "t-one-youtube-converter.p.rapidapi.com"
     }
-    while(True):
-        response = requests.request("GET", url, headers=headers, params=querystring)
-        json = str(response.text)
-        split = json.split('"')
+    response = requests.request("GET", url, headers=headers, params=querystring)
+    json = str(response.text)
+    split = json.split('"')
+    try:
+        theURL = split[11]
+        ugh = theURL.split('\\')
+        s = ""
+        for i in ugh:
+            array.append(i)
+            Mp3URL = s.join(array)
         print(response.text)
-        try:
-            theURL = split[11]
-            ugh = theURL.split('\\')
-            s = ""
-            for i in ugh:
-                array.append(i)
-                Mp3URL = s.join(array)
-            print(Mp3URL)
-            #print(response.text)
-            break
-        except:
-            time.sleep(2)
+    except:
+        guid = split[3];
+        YoutubeStatus(guid)
+def YoutubeStatus(guid):
+    global Mp3URL
+    array = []
+    youtubeURL = "https://www.youtube.com/watch?v=" + youtubeID
+    url = "https://t-one-youtube-converter.p.rapidapi.com/api/v1/statusProcess"
+
+    querystring = {"guid": guid, "responseFormat": "json", "lang": "it"}
+
+    headers = {
+        "X-RapidAPI-Key": "f0e0bb49b8msh380d03d27aa5fc7p19f33ajsna47ae205484d",
+        "X-RapidAPI-Host": "t-one-youtube-converter.p.rapidapi.com"
+    }
+
+    response = requests.request("GET", url, headers=headers, params=querystring)
+    json = str(response.text)
+    split = json.split('"')
+    theURL = split[11]
+    ugh = theURL.split('\\')
+    s = ""
+    for i in ugh:
+        array.append(i)
+        Mp3URL = s.join(array)
+    print(response.text)
+
+
 
 def play():
     p = vlc.MediaPlayer(Mp3URL)
     p.play()
-    time.sleep(30)
-
-def doSomething():
-    print('Hi')
 
 def main():
     YoutubeLookup()
     YoutubeConvert()
     play()
-
 main()
