@@ -10,6 +10,7 @@ import time
 def YoutubeLookup():
     global youtubeID
     name = str(sys.argv[1])
+    print(name)
     url = "https://youtube-v2.p.rapidapi.com/search/"
 
     querystring = {"query": name, "lang": "en", "country": "us"}
@@ -33,7 +34,7 @@ def YoutubeLookup():
         if s == "video_id":
             number +=1
     youtubeURL = "https://www.youtube.com/watch?v=" + youtubeID
-    print(youtubeURL)
+    #print(youtubeURL)
 
 
 def YoutubeConvert():
@@ -74,7 +75,7 @@ def YoutubeConvert():
             for i in ugh:
                 array.append(i)
                 Mp3URL = s.join(array)
-            print(Mp3URL)
+            print("The song has been gathered!")
             #print(response.text)
         else:
             guid = split[3]
@@ -113,7 +114,7 @@ def YoutubeStatus(guid):
         for i in ugh:
             array.append(i)
             Mp3URL = s.join(array)
-        print(Mp3URL)
+        print("The song has been gathered!")
     else:
         #print("Have to repeat 1 more time!")
         time.sleep(2)
