@@ -5,6 +5,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <unistd.h>
+#include <pthread.h>
 
 
 struct MemoryStruct {
@@ -41,6 +43,10 @@ struct All
 
 } *temp2;
 
+struct thread_params {
+    char *string;
+};
+
 /* Variable Declarations */
 int testCode();
 char *token2;
@@ -49,13 +55,27 @@ char *finalest;
 char genioslink[200] = "https://genius.com";
 struct All* AllHead = NULL;
 struct All* AllTemp = NULL;
+struct thread_params* paramsHead = NULL;
 char *song1;
 char *song2;
 char *song3;
+char *song4;
+char *song5;
 char *lyric1;
 char *lyric2;
 char *lyric3;
-GtkWidget *firstnameLabel, *firstnameEntry, *lastnameLabel, *lastnameEntry, *searchBtn, *grid, *showLyricBtn, *showLyricBtn1, *showLyricBtn2, *playSongBtn, *playSongBtn1, *playSongBtn2;
+char *lyric4;
+char *lyric5;
+GThread *thread;
+GMutex mutex;
+gboolean stop_thread = FALSE;
+bool song1Bool = false;
+bool song2Bool = false;
+bool song3Bool = false;
+bool song4Bool = false;
+bool song5Bool = false;
+GtkWidget *window;
+GtkWidget *firstnameLabel, *firstnameEntry, *lastnameLabel, *lastnameEntry, *searchBtn, *grid, *showLyricBtn, *showLyricBtn1, *showLyricBtn2, *showLyricBtn3, *showLyricBtn4, *playSongBtn, *playSongBtn1, *playSongBtn2, *playSongBtn3, *playSongBtn4;
 
 /* Function Prototypes */
 int main2(const gchar *, const gchar *);
@@ -76,30 +96,116 @@ bool file_exists(const char *filename)
     return is_exist;
 }
 
-void open_website_part(char* i, char *songname) {
-
+gpointer open_website_part(gpointer data) 
+{
+    g_mutex_lock(&mutex);
+    if(stop_thread)
+    {
+        g_mutex_unlock(&mutex);
+        g_thread_exit(NULL);
+    }
+    g_mutex_unlock(&mutex);
     char *filename = "lyricart.py";
             char *cmd;
 
     if (file_exists(filename)){
           //  char *tokentest = strdup(finalest);
-            asprintf(&cmd, "python3 lyricart.py \"%s\"", songname);
-            system(cmd);
-
+            if(song1Bool)
+            {
+                asprintf(&cmd, "python3 lyricart.py \"%s\"", song1);
+                system(cmd);
+                bool song1Bool = false;
+            }
+            if(song2Bool)
+            {
+                asprintf(&cmd, "python3 lyricart.py \"%s\"", song2);
+                system(cmd);
+                bool song2Bool = false;
+            }
+            if(song3Bool)
+            {
+                asprintf(&cmd, "python3 lyricart.py \"%s\"", song3);
+                system(cmd);
+                bool song3Bool = false;
+            }
         }
-    else {
-    #ifdef  __linux__
-    asprintf(&cmd, "xdg-open %s", i);
-    system(cmd);
-    #elif __APPLE__
-    asprintf(&cmd, "OPEN %s", i);
-    system(cmd);
-    #elif __WIN32__
-    asprintf(&cmd, "START %s", i);
-    system(cmd);
-    #endif
-}
+    else 
+    {
+        if(song1Bool)
+        {
+            #ifdef  __linux__
+            asprintf(&cmd, "xdg-open %s", lyric1);
+            system(cmd);
+            #elif __APPLE__
+            asprintf(&cmd, "OPEN %s", lyric1);
+            system(cmd);
+            #elif __WIN32__
+            asprintf(&cmd, "START %s", lyric1);
+            system(cmd);
+            #endif
+        }
+        if(song2Bool)
+        {
+            #ifdef  __linux__
+            asprintf(&cmd, "xdg-open %s", lyric2);
+            system(cmd);
+            #elif __APPLE__
+            asprintf(&cmd, "OPEN %s", lyric2);
+            system(cmd);
+            #elif __WIN32__
+            asprintf(&cmd, "START %s", lyric2);
+            system(cmd);
+            #endif
+        }
+        if(song3Bool)
+        {
+            #ifdef  __linux__
+            asprintf(&cmd, "xdg-open %s", lyric3);
+            system(cmd);
+            #elif __APPLE__
+            asprintf(&cmd, "OPEN %s", lyric3);
+            system(cmd);
+            #elif __WIN32__
+            asprintf(&cmd, "START %s", lyric3);
+            system(cmd);
+            #endif
+        }
+        if(song4Bool)
+        {
+            #ifdef  __linux__
+            asprintf(&cmd, "xdg-open %s", lyric4);
+            system(cmd);
+            #elif __APPLE__
+            asprintf(&cmd, "OPEN %s", lyric4);
+            system(cmd);
+            #elif __WIN32__
+            asprintf(&cmd, "START %s", lyric4);
+            system(cmd);
+            #endif
+        }
+        if(song5Bool)
+        {
+            #ifdef  __linux__
+            asprintf(&cmd, "xdg-open %s", lyric5);
+            system(cmd);
+            #elif __APPLE__
+            asprintf(&cmd, "OPEN %s", lyric5);
+            system(cmd);
+            #elif __WIN32__
+            asprintf(&cmd, "START %s", lyric5);
+            system(cmd);
+            #endif
+        }
+    }
     free(cmd);
+    g_mutex_lock(&mutex);
+    if(stop_thread)
+    {
+        g_mutex_unlock(&mutex);
+        g_thread_exit(NULL);
+    }
+    g_mutex_unlock(&mutex);
+    return NULL;
 }
 
 
@@ -108,102 +214,216 @@ void search_button_clicked(GtkWidget *wid,gpointer data) {
     const gchar *searchData2, *searchData = NULL;
     searchData = gtk_entry_get_text(GTK_ENTRY(firstnameEntry));
     searchData2 = gtk_entry_get_text(GTK_ENTRY(lastnameEntry));
+    gtk_widget_show(showLyricBtn4);
+    gtk_widget_show(showLyricBtn3);
     gtk_widget_show(showLyricBtn2);
     gtk_widget_show(showLyricBtn1);
     gtk_widget_show(showLyricBtn);
     gtk_widget_show(playSongBtn);
     gtk_widget_show(playSongBtn1);
     gtk_widget_show(playSongBtn2);
+    gtk_widget_show(playSongBtn3);
+    gtk_widget_show(playSongBtn4);
     main2(searchData, searchData2);
     
     gtk_label_set_text(GTK_LABEL(data), "Click on each song to see the lyric");
     gtk_button_set_label(GTK_BUTTON(showLyricBtn), song1);
     gtk_button_set_label(GTK_BUTTON(showLyricBtn1), song2);
     gtk_button_set_label(GTK_BUTTON(showLyricBtn2), song3);
+    gtk_button_set_label(GTK_BUTTON(showLyricBtn3), song4);
+    gtk_button_set_label(GTK_BUTTON(showLyricBtn4), song5);
     gtk_button_set_label(GTK_BUTTON(playSongBtn), "Play");
     gtk_button_set_label(GTK_BUTTON(playSongBtn1), "Play");
     gtk_button_set_label(GTK_BUTTON(playSongBtn2), "Play");
+    gtk_button_set_label(GTK_BUTTON(playSongBtn3), "Play");
+    gtk_button_set_label(GTK_BUTTON(playSongBtn4), "Play");
     gtk_entry_set_text(GTK_ENTRY(firstnameEntry),"");
     gtk_entry_set_text(GTK_ENTRY(lastnameEntry),"");
+    gtk_window_resize(GTK_WINDOW(window), 600, 450);
 }
 
 
 
-void Lyric_button_clicked(GtkWidget *wid,gpointer data) {
-  //  char *tokentest = strdup(finalest);
-
-   // printf("%s", tokentest);
-    gchar *text = gtk_button_get_label (showLyricBtn);
-
-    open_website_part(lyric1, text);
-    /*
-    GtkApplication* app2 = gtk_application_new ("xyz.null0verflow", G_APPLICATION_DEFAULT_FLAGS);
-    g_signal_connect (app2, "activate", G_CALLBACK(NULL), NULL);
-    GtkWidget *window2;
-    window2 = gtk_application_window_new (app2);
-    gtk_window_set_title (GTK_WINDOW (window2), "Lyric");
-    gtk_window_set_default_size (GTK_WINDOW (window2), 250, 600);
-    GtkWidget *box2; 
-    box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL,20);
-    gtk_container_add(GTK_CONTAINER(window2),box2);
-    gtk_widget_show_all (window2);
-    */
-
-}
-void playSong(char* songname)
+void Lyric_button_clicked(GtkWidget *wid,gpointer data) 
 {
+    song1Bool =true;
+    thread = g_thread_new("my_thread", open_website_part, NULL);
+}
+void Lyric1_button_clicked(GtkWidget *wid,gpointer data) 
+{
+    song2Bool =true;
+    thread = g_thread_new("my_thread", open_website_part, NULL);
+}
+
+void Lyric2_button_clicked(GtkWidget *wid,gpointer data) 
+{
+    song3Bool =true;
+    thread = g_thread_new("my_thread", open_website_part, NULL);
+}
+void Lyric3_button_clicked(GtkWidget *wid,gpointer data) 
+{
+    song4Bool =true;
+    thread = g_thread_new("my_thread", open_website_part, NULL);
+}
+
+void Lyric4_button_clicked(GtkWidget *wid,gpointer data) 
+{
+    song5Bool =true;
+    thread = g_thread_new("my_thread", open_website_part, NULL);
+}
+gpointer playSong(gpointer data)
+{
+    g_mutex_lock(&mutex);
+    if(stop_thread)
+    {
+        g_mutex_unlock(&mutex);
+        g_thread_exit(NULL);
+    }
+    g_mutex_unlock(&mutex);
+
     char *filename = "pySong.py";
-            char *cmd;
-
-    if (file_exists(filename)){
-          //  char *tokentest = strdup(finalest);
-            asprintf(&cmd, "python3 pySong.py \"%s\"", songname);
+    char *cmd;
+    if(song1Bool)
+    {
+        if (file_exists(filename))
+        {
+            //  char *tokentest = strdup(finalest);
+            asprintf(&cmd, "python3 pySong.py \"%s\"", song1);
             system(cmd);
-
+            song1Bool = false;
         }
-}
-void Lyric1_button_clicked(GtkWidget *wid,gpointer data) {
-  //  char *tokentest = strdup(finalest);
-
- //  printf("%s", tokentest);
-    gchar *text = gtk_button_get_label (showLyricBtn1);
-
-    open_website_part(lyric2, text);
-}
-
-void Lyric2_button_clicked(GtkWidget *wid,gpointer data) {
-    //char *tokentest = strdup(finalest);
-
-   // printf("%s", tokentest);
-    gchar *text = gtk_button_get_label (showLyricBtn2);
-    open_website_part(lyric3, text);
+    }
+    if(song2Bool)
+    {
+        if (file_exists(filename))
+        {
+            //  char *tokentest = strdup(finalest);
+            asprintf(&cmd, "python3 pySong.py \"%s\"", song2);
+            system(cmd);
+            song2Bool = false;
+        }
+    }
+    if(song3Bool)
+    {
+        if (file_exists(filename))
+        {
+            //  char *tokentest = strdup(finalest);
+            asprintf(&cmd, "python3 pySong.py \"%s\"", song3);
+            system(cmd);
+            song3Bool = false;
+        }
+    }
+    if(song4Bool)
+    {
+        if (file_exists(filename))
+        {
+            //  char *tokentest = strdup(finalest);
+            asprintf(&cmd, "python3 pySong.py \"%s\"", song4);
+            system(cmd);
+            song4Bool = false;
+        }
+    }
+    if(song5Bool)
+    {
+        if (file_exists(filename))
+        {
+            //  char *tokentest = strdup(finalest);
+            asprintf(&cmd, "python3 pySong.py \"%s\"", song5);
+            system(cmd);
+            song5Bool = false;
+        }
+    }
+    g_mutex_lock(&mutex);
+    if(stop_thread)
+    {
+        g_mutex_unlock(&mutex);
+        g_thread_exit(NULL);
+    }
+    g_mutex_unlock(&mutex);
+    return NULL;
 }
 
 void play_button_clicked(GtkWidget *wid,gpointer data) {
-    playSong(song1);
+    g_mutex_lock(&mutex);
+    stop_thread = TRUE;
+    g_mutex_unlock(&mutex);
+    char *cmd;
+    asprintf(&cmd, "pkill -9 -f pySong.py");
+    system(cmd);
+    stop_thread = FALSE;
+    song1Bool =true;
+    thread = g_thread_new("my_thread", playSong, NULL);
 }
 
 void play1_button_clicked(GtkWidget *wid,gpointer data) {
-    playSong(song2);;
+    g_mutex_lock(&mutex);
+    stop_thread = TRUE;
+    g_mutex_unlock(&mutex);
+    char *cmd;
+    asprintf(&cmd, "pkill -9 -f pySong.py");
+    system(cmd);
+    stop_thread = FALSE;
+    song2Bool =true;
+    thread = g_thread_new("my_thread", playSong, NULL);
 }
 
 void play2_button_clicked(GtkWidget *wid,gpointer data) {
-
-    playSong(song3);
+    g_mutex_lock(&mutex);
+    stop_thread = TRUE;
+    g_mutex_unlock(&mutex);
+    char *cmd;
+    asprintf(&cmd, "pkill -9 -f pySong.py");
+    system(cmd);
+    stop_thread = FALSE;
+    song3Bool =true;
+    thread = g_thread_new("my_thread", playSong, NULL);
 }
+void play3_button_clicked(GtkWidget *wid,gpointer data) {
+    g_mutex_lock(&mutex);
+    stop_thread = TRUE;
+    g_mutex_unlock(&mutex);
+    char *cmd;
+    asprintf(&cmd, "pkill -9 -f pySong.py");
+    system(cmd);
+    stop_thread = FALSE;
+    song4Bool =true;
+    thread = g_thread_new("my_thread", playSong, NULL);
+}
+void play4_button_clicked(GtkWidget *wid,gpointer data) {
+    g_mutex_lock(&mutex);
+    stop_thread = TRUE;
+    g_mutex_unlock(&mutex);
+    char *cmd;
+    asprintf(&cmd, "pkill -9 -f pySong.py");
+    system(cmd);
+    stop_thread = FALSE;
+    song5Bool =true;
+    thread = g_thread_new("my_thread", playSong, NULL);
+}
+
+void on_window_closed(GtkWidget *widget, gpointer data)
+{
+    g_mutex_lock(&mutex);
+    stop_thread = TRUE;
+    g_mutex_unlock(&mutex);
+    char *cmd;
+    asprintf(&cmd, "pkill -9 -f pySong.py");
+    system(cmd);
+    gtk_main_quit();
+}
+
 static void activate (GtkApplication* app, gpointer user_data) {
-    GtkWidget *window;
-      GtkWidget *fixed;
-  fixed = gtk_fixed_new();
+    GtkWidget *fixed;
+    fixed = gtk_fixed_new();
 
     window = gtk_application_window_new (app);
     gtk_window_set_title (GTK_WINDOW (window), "One of the top hits by artist");
-    gtk_window_set_default_size (GTK_WINDOW (window), 600, 400);
+    gtk_window_set_default_size (GTK_WINDOW(window), 50, 100);
 
 
 
     GtkWidget *showSearch;
-    firstnameLabel = gtk_label_new("First name:");
+    firstnameLabel = gtk_label_new("First Name:");
     firstnameEntry = gtk_entry_new();
     gtk_entry_set_placeholder_text(GTK_ENTRY(firstnameEntry),"First Name");
     //GIcon *icon; 
@@ -212,7 +432,7 @@ static void activate (GtkApplication* app, gpointer user_data) {
     //icon = g_file_icon_new(path);
     //gtk_entry_set_icon_from_gicon(GTK_ENTRY(firstnameEntry),GTK_ENTRY_ICON_PRIMARY,icon);
     
-    lastnameLabel = gtk_label_new("Lastname:");
+    lastnameLabel = gtk_label_new("Last Name:");
     lastnameEntry = gtk_entry_new();
     gtk_entry_set_placeholder_text(GTK_ENTRY(lastnameEntry),"Last Name");
     //gtk_entry_set_visibility(GTK_ENTRY(lastnameEntry),FALSE);
@@ -221,44 +441,59 @@ static void activate (GtkApplication* app, gpointer user_data) {
     showLyricBtn = gtk_button_new_with_label("Show Lyric");
     showLyricBtn1 = gtk_button_new_with_label("Show Lyric");
     showLyricBtn2 = gtk_button_new_with_label("Show Lyric");
+    showLyricBtn3 = gtk_button_new_with_label("Show Lyric");
+    showLyricBtn4 = gtk_button_new_with_label("Show Lyric");
     playSongBtn = gtk_button_new_with_label("Play");
     playSongBtn1 = gtk_button_new_with_label("Play");
     playSongBtn2 = gtk_button_new_with_label("Play");
+    playSongBtn3 = gtk_button_new_with_label("Play");
+    playSongBtn4 = gtk_button_new_with_label("Play");
 
 
 
     showSearch = gtk_label_new("");
     
     g_signal_connect(searchBtn,"clicked",G_CALLBACK(search_button_clicked),showSearch);
-
     g_signal_connect(showLyricBtn,"clicked",G_CALLBACK(Lyric_button_clicked),showSearch);
     g_signal_connect(showLyricBtn1,"clicked",G_CALLBACK(Lyric1_button_clicked),showSearch);
     g_signal_connect(showLyricBtn2,"clicked",G_CALLBACK(Lyric2_button_clicked),showSearch);
+    g_signal_connect(showLyricBtn3,"clicked",G_CALLBACK(Lyric3_button_clicked),showSearch);
+    g_signal_connect(showLyricBtn4,"clicked",G_CALLBACK(Lyric4_button_clicked),showSearch);
     g_signal_connect(playSongBtn,"clicked",G_CALLBACK(play_button_clicked),showSearch);
     g_signal_connect(playSongBtn1,"clicked",G_CALLBACK(play1_button_clicked),showSearch);
     g_signal_connect(playSongBtn2,"clicked",G_CALLBACK(play2_button_clicked),showSearch);
+    g_signal_connect(playSongBtn3,"clicked",G_CALLBACK(play3_button_clicked),showSearch);
+    g_signal_connect(playSongBtn4,"clicked",G_CALLBACK(play4_button_clicked),showSearch);
+
+    g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(on_window_closed), NULL);
 
 
     
     GtkWidget *box;
     box = gtk_box_new(GTK_ORIENTATION_VERTICAL,20);
-    gtk_fixed_put(GTK_FIXED(fixed),firstnameLabel,30,20);
+    gtk_fixed_put(GTK_FIXED(fixed),firstnameLabel,20,20);
     gtk_fixed_put(GTK_FIXED(fixed),firstnameEntry,100,10);
-    gtk_fixed_put(GTK_FIXED(fixed),lastnameLabel,30,60);
+    gtk_fixed_put(GTK_FIXED(fixed),lastnameLabel,20,60);
     gtk_fixed_put(GTK_FIXED(fixed),lastnameEntry,100,50);
-    gtk_fixed_put(GTK_FIXED(fixed),searchBtn,200,100);
+    gtk_fixed_put(GTK_FIXED(fixed),searchBtn,190,100);
 
     gtk_fixed_put(GTK_FIXED(fixed),showSearch,200,150);
 
     gtk_fixed_put(GTK_FIXED(fixed),showLyricBtn,10,200);
     gtk_fixed_put(GTK_FIXED(fixed),showLyricBtn1,10,250);
     gtk_fixed_put(GTK_FIXED(fixed),showLyricBtn2,10,300);
+    gtk_fixed_put(GTK_FIXED(fixed),showLyricBtn3,10,350);
+    gtk_fixed_put(GTK_FIXED(fixed),showLyricBtn4,10,400);
     gtk_fixed_put(GTK_FIXED(fixed),playSongBtn,500,200);
     gtk_fixed_put(GTK_FIXED(fixed),playSongBtn1,500,250);
     gtk_fixed_put(GTK_FIXED(fixed),playSongBtn2,500,300);
+    gtk_fixed_put(GTK_FIXED(fixed),playSongBtn3,500,350);
+    gtk_fixed_put(GTK_FIXED(fixed),playSongBtn4,500,400);
     gtk_widget_set_size_request(playSongBtn, 80, 30);
     gtk_widget_set_size_request(playSongBtn1, 80, 30);
     gtk_widget_set_size_request(playSongBtn2,80, 30);
+    gtk_widget_set_size_request(playSongBtn3, 80, 30);
+    gtk_widget_set_size_request(playSongBtn4, 80, 30);
 
     //gtk_container_add(GTK_CONTAINER(window),box);
 
@@ -268,9 +503,13 @@ static void activate (GtkApplication* app, gpointer user_data) {
     gtk_widget_hide(showLyricBtn);
     gtk_widget_hide(showLyricBtn1);
     gtk_widget_hide(showLyricBtn2);
+    gtk_widget_hide(showLyricBtn3);
+    gtk_widget_hide(showLyricBtn4);
     gtk_widget_hide(playSongBtn);
     gtk_widget_hide(playSongBtn1);
     gtk_widget_hide(playSongBtn2);
+    gtk_widget_hide(playSongBtn3);
+    gtk_widget_hide(playSongBtn4);
 
 
 }
@@ -294,6 +533,7 @@ WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp) {
     
     return realsize;
 }
+
 bool silent = false;
 int main(int argc,char *argv[]) {
     if(argc == 1)
@@ -303,7 +543,7 @@ int main(int argc,char *argv[]) {
         app = gtk_application_new ("xyz.null0verflow", G_APPLICATION_FLAGS_NONE);
         g_signal_connect (app, "activate", G_CALLBACK(activate), NULL);
         status = g_application_run(G_APPLICATION(app), argc, argv);
-        return status;
+        return status; 
     }
     if(argc == 2)
     {
@@ -347,27 +587,46 @@ int main(int argc,char *argv[]) {
                         bool menu2 = true;
                         while(menu2)
                         {
-                            printf("\nHere are your songs:\n1. %s\n2. %s\n3. %s\n", song1, song2, song3);
+                            printf("\nHere are your songs:\n1. %s\n2. %s\n3. %s\n4. %s\n5. %s\n", song1, song2, song3, song4, song5);
                             scanf("%d", &choice2);
                             if(choice2 == 1)
                             {   
                                 menu2 = false;
                                 songChoice = song1;
-                                open_website_part(lyric1, song1);
+                                song1Bool = true;
+                                open_website_part(NULL);
                                 break;
                             }
                             if(choice2 == 2)
                             {
                                 menu2 = false;
                                 songChoice = song2;
-                                open_website_part(lyric2, song2);
+                                song2Bool = true;
+                                open_website_part(NULL);
                                 break;
                             }
                             if(choice2 == 3)
                             {
                                 menu2 = false;
                                 songChoice = song3;
-                                open_website_part(lyric3, song3);
+                                song3Bool = true;
+                                open_website_part(NULL);
+                                break;
+                            }
+                            if(choice2 == 4)
+                            {
+                                menu2 = false;
+                                songChoice = song3;
+                                song4Bool = true;
+                                open_website_part(NULL);
+                                break;
+                            }
+                            if(choice2 == 5)
+                            {
+                                menu2 = false;
+                                songChoice = song3;
+                                song5Bool = true;
+                                open_website_part(NULL);
                                 break;
                             }
                             else
@@ -383,27 +642,46 @@ int main(int argc,char *argv[]) {
                         bool menu2 = true;
                         while(menu2)
                         {
-                            printf("\nHere are your songs:\n1. %s\n2. %s\n3. %s\n", song1, song2, song3);
+                            printf("\nHere are your songs:\n1. %s\n2. %s\n3. %s\n4. %s\n5. %s\n", song1, song2, song3, song4, song5);
                             scanf("%d", &choice2);
                             if(choice2 == 1)
                             {   
                                 menu2 = false;
                                 songChoice = song1;
-                                playSong(song1);
+                                song1Bool = true;
+                                playSong(NULL);
                                 break;
                             }
                             if(choice2 == 2)
                             {
                                 menu2 = false;
                                 songChoice = song2;
-                                playSong(song2);
+                                song2Bool = true;
+                                playSong(NULL);
                                 break;
                             }
                             if(choice2 == 3)
                             {
                                 menu2 = false;
                                 songChoice = song3;
-                                playSong(song3);
+                                song3Bool = true;
+                                playSong(NULL);
+                                break;
+                            }
+                            if(choice2 == 4)
+                            {
+                                menu2 = false;
+                                songChoice = song4;
+                                song4Bool = true;
+                                playSong(NULL);
+                                break;
+                            }
+                            if(choice2 == 5)
+                            {
+                                menu2 = false;
+                                songChoice = song5;
+                                song5Bool = true;
+                                playSong(NULL);
                                 break;
                             }
                             else
@@ -474,7 +752,7 @@ void AllTraverse(struct All** head, struct All* temp)
         {
             if(!silent)
             {
-                if(count <= 2)
+                if(count <= 4)
                 {
                     printf("\n\n########################################\n");
                     printf("Pointer Address: %p\n", temp);
@@ -493,6 +771,16 @@ void AllTraverse(struct All** head, struct All* temp)
                     if(count == 2){
                         song3 = temp->Song;
                         lyric3 = temp->LyricURL;
+                    }
+                    if(count == 3)
+                    {
+                        song4 = temp->Song;
+                        lyric4 = temp->LyricURL;
+                    }
+                    if(count == 4)
+                    {
+                        song5 = temp->Song;
+                        lyric5 = temp->LyricURL;
                     }
                 }
             temp = temp->next;
@@ -1155,3 +1443,4 @@ void parseJson() {
     token2 = strtok(chunk.memory, deli);
     finalest = strdup(token2);
 }*/
+
