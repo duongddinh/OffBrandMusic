@@ -128,6 +128,18 @@ gpointer open_website_part(gpointer data)
                 system(cmd);
                 bool song3Bool = false;
             }
+            if(song4Bool)
+            {
+                asprintf(&cmd, "python3 lyricart.py \"%s\"", song4);
+                system(cmd);
+                bool song4Bool = false;
+            }
+            if(song5Bool)
+            {
+                asprintf(&cmd, "python3 lyricart.py \"%s\"", song5);
+                system(cmd);
+                bool song5Bool = false;
+            }
         }
     else 
     {
@@ -788,7 +800,7 @@ void AllTraverse(struct All** head, struct All* temp)
             }
             else
             {
-                if(count <= 2)
+                if(count <= 4)
                 {
                     if(count == 0){
                         song1 = temp->Song;
@@ -801,6 +813,14 @@ void AllTraverse(struct All** head, struct All* temp)
                     if(count == 2){
                         song3 = temp->Song;
                         lyric3 = temp->LyricURL;
+                    }
+                    if(count == 3){
+                        song4 = temp->Song;
+                        lyric4 = temp->LyricURL;
+                    }
+                    if(count == 4){
+                        song5 = temp->Song;
+                        lyric5 = temp->LyricURL;
                     }
                 }
             temp = temp->next;
@@ -1443,4 +1463,3 @@ void parseJson() {
     token2 = strtok(chunk.memory, deli);
     finalest = strdup(token2);
 }*/
-
