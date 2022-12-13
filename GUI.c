@@ -1,4 +1,4 @@
- #define _GNU_SOURCE
+#define _GNU_SOURCE
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include <curl/curl.h>
@@ -13,9 +13,6 @@ struct MemoryStruct {
     char *memory;
     size_t size;
 } chunk;
-
-/* Made All char Allocations in these structs 500. Not sure why, but it fixes a memory allocation issue in the CreateListNodeAll function later 
-when the user searches only for specific artists. Elvis Presley, Frank Sinatra, Justin Bieber, and Geto Boys were among a few. */
 struct SongStruct
 {
     struct SongStruct* next;
@@ -45,15 +42,9 @@ struct All
 
 } *temp2;
 
-
-struct thread_params {
-    char *string;
-};
-
 /* Variable Declarations */
 struct All* AllHead = NULL;
 struct All* AllTemp = NULL;
-struct thread_params* paramsHead = NULL;
 char *song1;
 char *song2;
 char *song3;
@@ -316,6 +307,7 @@ gpointer playSong(gpointer data)
     {
         if (file_exists(filename))
         {
+            //  char *tokentest = strdup(finalest);
             asprintf(&cmd, "python3 pySong.py \"%s\"", song1);
             system(cmd);
             song1Bool = false;
@@ -325,6 +317,7 @@ gpointer playSong(gpointer data)
     {
         if (file_exists(filename))
         {
+            //  char *tokentest = strdup(finalest);
             asprintf(&cmd, "python3 pySong.py \"%s\"", song2);
             system(cmd);
             song2Bool = false;
@@ -334,6 +327,7 @@ gpointer playSong(gpointer data)
     {
         if (file_exists(filename))
         {
+            //  char *tokentest = strdup(finalest);
             asprintf(&cmd, "python3 pySong.py \"%s\"", song3);
             system(cmd);
             song3Bool = false;
@@ -343,6 +337,7 @@ gpointer playSong(gpointer data)
     {
         if (file_exists(filename))
         {
+            //  char *tokentest = strdup(finalest);
             asprintf(&cmd, "python3 pySong.py \"%s\"", song4);
             system(cmd);
             song4Bool = false;
@@ -352,6 +347,7 @@ gpointer playSong(gpointer data)
     {
         if (file_exists(filename))
         {
+            //  char *tokentest = strdup(finalest);
             asprintf(&cmd, "python3 pySong.py \"%s\"", song5);
             system(cmd);
             song5Bool = false;
@@ -431,9 +427,9 @@ void on_window_closed(GtkWidget *widget, gpointer data)
     stop_thread = TRUE;
     g_mutex_unlock(&mutex);
     char *cmd;
-    asprintf(&cmd, "pkill -9 -f pySong.py");
-    asprintf(&cmd, "pkill -9 -f lyricart.py");
+    asprintf(&cmd, "pkill -9 python");
     system(cmd);
+    free(cmd);
 }
 
 static void activate (GtkApplication* app, gpointer user_data) {
@@ -550,7 +546,7 @@ int main(int argc,char *argv[]) {
     {
         GtkApplication *app;
         int status;        
-        app = gtk_application_new ("xyz.null0verflow", G_APPLICATION_DEFAULT_FLAGS);
+        app = gtk_application_new ("xyz.null0verflow", G_APPLICATION_FLAGS_NONE);
         g_signal_connect (app, "activate", G_CALLBACK(activate), NULL);
         status = g_application_run(G_APPLICATION(app), argc, argv);
         return status;
@@ -725,7 +721,7 @@ int main(int argc,char *argv[]) {
     char geniusToken[] = "mXWeiTbMTOxwTP87bXlHJtTKcaam60Njvfb5OsR8XAHflIqFKvGEgGuAkXZ2dtkC";
     strcat(genius, firstname);
     strcat(genius, "%20");
-    strcat(genius, lastname);   
+    strcat(genius, lastname);
     httpsGet(geniusToken, genius);
     return 0;
 }
@@ -1357,3 +1353,4 @@ void httpsGet(char token[], char url[]) {
     curl_easy_cleanup(curl);
     curl_global_cleanup();
 }
+
