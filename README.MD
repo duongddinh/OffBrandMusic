@@ -7,7 +7,7 @@ pip install requests
 pip install python-vlc
 ```
 ```
-gcc name.c -o name `pkg-config --cflags --libs gtk+-3.0` -lcurl
+gcc GUI.c -o mycelium `pkg-config --cflags --libs gtk+-3.0` -lcurl
 ```
 
 get python prerequiritories for macOS only if you are using linux, google how to get pip and python-tk
