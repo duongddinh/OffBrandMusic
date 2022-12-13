@@ -1,7 +1,3 @@
-#https://www.geeksforgeeks.org/create-a-gui-to-extract-lyrics-from-song-using-python/
-#from lyrics_extractor import SongLyrics
-#extract_lyrics = SongLyrics("AIzaSyAioc_cAMamMxqE_E6VgXj_z4RITnfD4ZM", "b571a4104c6254ba5")
-#extract_lyrics.get_lyrics("Shape of You")
 import sys
 from tkinter import *
 from lyrics_extractor import SongLyrics
