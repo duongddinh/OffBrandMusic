@@ -33,8 +33,6 @@ def YoutubeLookup():
             number+=1
         if s == "video_id":
             number +=1
-    youtubeURL = "https://www.youtube.com/watch?v=" + youtubeID
-    #print(youtubeURL)
 
 
 def YoutubeConvert():
@@ -76,7 +74,6 @@ def YoutubeConvert():
                 array.append(i)
                 Mp3URL = s.join(array)
             print("The song has been gathered!")
-            #print(response.text)
         else:
             guid = split[3]
             YoutubeStatus(guid)
@@ -116,7 +113,6 @@ def YoutubeStatus(guid):
             Mp3URL = s.join(array)
         print("The song has been gathered!")
     else:
-        #print("Have to repeat 1 more time!")
         time.sleep(2)
         YoutubeStatus(guid)
 
