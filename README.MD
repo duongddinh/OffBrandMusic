@@ -11,3 +11,5 @@ pip install python-vlc
 ```
 gcc GUI.c -o mycelium `pkg-config --cflags --libs gtk+-3.0` -lcurl
 ```
+To run the program execute it with ./mycelium from the terminal.
+To run the program with no GUI execute it with ./mycelium silent
