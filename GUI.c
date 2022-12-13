@@ -1,4 +1,4 @@
-#define _GNU_SOURCE
+ #define _GNU_SOURCE
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include <curl/curl.h>
@@ -13,32 +13,35 @@ struct MemoryStruct {
     char *memory;
     size_t size;
 } chunk;
+
+/* Made All char Allocations in these structs 500. Not sure why, but it fixes a memory allocation issue in the CreateListNodeAll function later 
+when the user searches only for specific artists. Elvis Presley, Frank Sinatra, Justin Bieber, and Geto Boys were among a few. */
 struct SongStruct
 {
     struct SongStruct* next;
-    char Song[100];
+    char Song[500];
 
 };
 
 struct ArtistStruct
 {
     struct ArtistStruct* next;
-    char ArtistName[100];
+    char ArtistName[500];
 
 };
 
 struct LyricStruct
 {
     struct LyricStruct* next;
-    char LyricURL[200];
+    char LyricURL[500];
 };
 
 struct All
 {
     struct All* next;
-    char ArtistName[100];
-    char Song[100];
-    char LyricURL[200];
+    char ArtistName[500];
+    char Song[500];
+    char LyricURL[500];
 
 } *temp2;
 
