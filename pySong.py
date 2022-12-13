@@ -48,7 +48,6 @@ def YoutubeConvert():
     response = requests.request("GET", url, headers=headers, params=querystring)
     json = str(response.text)
     split = json.split('"')
-    #print(response.text)
     good = False
     count = 0
     bad = False
