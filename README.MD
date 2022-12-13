@@ -1,3 +1,5 @@
+Ensure pip and python-tk are installed
+
 To compile file, do
 ```
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
@@ -8,11 +10,4 @@ pip install python-vlc
 ```
 ```
 gcc GUI.c -o mycelium `pkg-config --cflags --libs gtk+-3.0` -lcurl
-```
-
-get python prerequiritories for macOS only if you are using linux, google how to get pip and python-tk
-
-```
-brew install python-tk
-
 ```
