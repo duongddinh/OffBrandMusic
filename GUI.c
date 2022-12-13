@@ -12,8 +12,7 @@
 struct MemoryStruct {
     char *memory;
     size_t size;
-};
-struct MemoryStruct chunk;
+} chunk;
 struct SongStruct
 {
     struct SongStruct* next;
@@ -43,16 +42,12 @@ struct All
 
 } *temp2;
 
+
 struct thread_params {
     char *string;
 };
 
 /* Variable Declarations */
-int testCode();
-char *token2;
-char *token3;
-char *finalest;
-char genioslink[200] = "https://genius.com";
 struct All* AllHead = NULL;
 struct All* AllTemp = NULL;
 struct thread_params* paramsHead = NULL;
@@ -109,7 +104,6 @@ gpointer open_website_part(gpointer data)
             char *cmd;
 
     if (file_exists(filename)){
-          //  char *tokentest = strdup(finalest);
             if(song1Bool)
             {
                 asprintf(&cmd, "python3 lyricart.py \"%s\"", song1);
@@ -259,27 +253,47 @@ void search_button_clicked(GtkWidget *wid,gpointer data) {
 void Lyric_button_clicked(GtkWidget *wid,gpointer data) 
 {
     song1Bool =true;
+    song2Bool =false;
+    song3Bool =false;
+    song4Bool =false;
+    song5Bool =false;
     thread = g_thread_new("my_thread", open_website_part, NULL);
 }
 void Lyric1_button_clicked(GtkWidget *wid,gpointer data) 
 {
+    song1Bool =false;
     song2Bool =true;
+    song3Bool =false;
+    song4Bool =false;
+    song5Bool =false;
     thread = g_thread_new("my_thread", open_website_part, NULL);
 }
 
 void Lyric2_button_clicked(GtkWidget *wid,gpointer data) 
 {
+    song1Bool =false;
+    song2Bool =false;
     song3Bool =true;
+    song4Bool =false;
+    song5Bool =false;
     thread = g_thread_new("my_thread", open_website_part, NULL);
 }
 void Lyric3_button_clicked(GtkWidget *wid,gpointer data) 
 {
+    song1Bool =false;
+    song2Bool =false;
+    song3Bool =false;
     song4Bool =true;
+    song5Bool =false;
     thread = g_thread_new("my_thread", open_website_part, NULL);
 }
 
 void Lyric4_button_clicked(GtkWidget *wid,gpointer data) 
 {
+    song1Bool =false;
+    song2Bool =false;
+    song3Bool =false;
+    song4Bool =false;
     song5Bool =true;
     thread = g_thread_new("my_thread", open_website_part, NULL);
 }
@@ -299,7 +313,6 @@ gpointer playSong(gpointer data)
     {
         if (file_exists(filename))
         {
-            //  char *tokentest = strdup(finalest);
             asprintf(&cmd, "python3 pySong.py \"%s\"", song1);
             system(cmd);
             song1Bool = false;
@@ -309,7 +322,6 @@ gpointer playSong(gpointer data)
     {
         if (file_exists(filename))
         {
-            //  char *tokentest = strdup(finalest);
             asprintf(&cmd, "python3 pySong.py \"%s\"", song2);
             system(cmd);
             song2Bool = false;
@@ -319,7 +331,6 @@ gpointer playSong(gpointer data)
     {
         if (file_exists(filename))
         {
-            //  char *tokentest = strdup(finalest);
             asprintf(&cmd, "python3 pySong.py \"%s\"", song3);
             system(cmd);
             song3Bool = false;
@@ -329,7 +340,6 @@ gpointer playSong(gpointer data)
     {
         if (file_exists(filename))
         {
-            //  char *tokentest = strdup(finalest);
             asprintf(&cmd, "python3 pySong.py \"%s\"", song4);
             system(cmd);
             song4Bool = false;
@@ -339,7 +349,6 @@ gpointer playSong(gpointer data)
     {
         if (file_exists(filename))
         {
-            //  char *tokentest = strdup(finalest);
             asprintf(&cmd, "python3 pySong.py \"%s\"", song5);
             system(cmd);
             song5Bool = false;
@@ -420,8 +429,8 @@ void on_window_closed(GtkWidget *widget, gpointer data)
     g_mutex_unlock(&mutex);
     char *cmd;
     asprintf(&cmd, "pkill -9 -f pySong.py");
+    asprintf(&cmd, "pkill -9 -f lyricart.py");
     system(cmd);
-    gtk_main_quit();
 }
 
 static void activate (GtkApplication* app, gpointer user_data) {
@@ -432,22 +441,14 @@ static void activate (GtkApplication* app, gpointer user_data) {
     gtk_window_set_title (GTK_WINDOW (window), "One of the top hits by artist");
     gtk_window_set_default_size (GTK_WINDOW(window), 50, 100);
 
-
-
     GtkWidget *showSearch;
     firstnameLabel = gtk_label_new("First Name:");
     firstnameEntry = gtk_entry_new();
     gtk_entry_set_placeholder_text(GTK_ENTRY(firstnameEntry),"First Name");
-    //GIcon *icon; 
-    //GFile *path;
-    //path = g_file_new_for_path("");
-    //icon = g_file_icon_new(path);
-    //gtk_entry_set_icon_from_gicon(GTK_ENTRY(firstnameEntry),GTK_ENTRY_ICON_PRIMARY,icon);
     
     lastnameLabel = gtk_label_new("Last Name:");
     lastnameEntry = gtk_entry_new();
     gtk_entry_set_placeholder_text(GTK_ENTRY(lastnameEntry),"Last Name");
-    //gtk_entry_set_visibility(GTK_ENTRY(lastnameEntry),FALSE);
     searchBtn = gtk_button_new_with_label("search");
 
     showLyricBtn = gtk_button_new_with_label("Show Lyric");
@@ -460,8 +461,6 @@ static void activate (GtkApplication* app, gpointer user_data) {
     playSongBtn2 = gtk_button_new_with_label("Play");
     playSongBtn3 = gtk_button_new_with_label("Play");
     playSongBtn4 = gtk_button_new_with_label("Play");
-
-
 
     showSearch = gtk_label_new("");
     
@@ -478,8 +477,6 @@ static void activate (GtkApplication* app, gpointer user_data) {
     g_signal_connect(playSongBtn4,"clicked",G_CALLBACK(play4_button_clicked),showSearch);
 
     g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(on_window_closed), NULL);
-
-
     
     GtkWidget *box;
     box = gtk_box_new(GTK_ORIENTATION_VERTICAL,20);
@@ -506,8 +503,6 @@ static void activate (GtkApplication* app, gpointer user_data) {
     gtk_widget_set_size_request(playSongBtn2,80, 30);
     gtk_widget_set_size_request(playSongBtn3, 80, 30);
     gtk_widget_set_size_request(playSongBtn4, 80, 30);
-
-    //gtk_container_add(GTK_CONTAINER(window),box);
 
     gtk_container_add(GTK_CONTAINER(window), fixed);
 
@@ -551,11 +546,11 @@ int main(int argc,char *argv[]) {
     if(argc == 1)
     {
         GtkApplication *app;
-        int status;
-        app = gtk_application_new ("xyz.null0verflow", G_APPLICATION_FLAGS_NONE);
+        int status;        
+        app = gtk_application_new ("xyz.null0verflow", G_APPLICATION_DEFAULT_FLAGS);
         g_signal_connect (app, "activate", G_CALLBACK(activate), NULL);
         status = g_application_run(G_APPLICATION(app), argc, argv);
-        return status; 
+        return status;
     }
     if(argc == 2)
     {
@@ -563,11 +558,12 @@ int main(int argc,char *argv[]) {
         char args[] = "silent";
         if(!strcmp(argv[1], args))
         {   
-            char name[50];
+            char *name;
+            name = (char *)malloc(100 * sizeof(char));
             char *first;
             char *last;
             printf("\nHello and welcome to the C music player!\nPlease input artist name!\n");
-            gets(name);
+            scanf("%[^\n]", name);
             int count = 0;
             char* temp = strtok(name, " ");
             while(temp != NULL)
@@ -586,14 +582,16 @@ int main(int argc,char *argv[]) {
             if(main2(first, last) == 0)
             {
                 bool menu = true;
-                int choice1 = 0;
+                int choice1 = '0';
                 int choice2 = 0;
                 char* songChoice;
                 while(menu)
                 {
-                    printf("Your songs have been gathered!\nPlease insert the function value you'd like to execute.");
-                    printf("\n1. Show Lyrics\n2. Play Song\n");
-                    scanf("%d", &choice1);
+                    printf("Your songs have been gathered!\n");
+                    printf("1. Show Lyrics\n");
+                    printf("2. Play Song\n");
+                    printf("Please insert the function value you'd like to execute: ");
+                    scanf(" %d", &choice1);
                     if(choice1 == 1)
                     {
                         bool menu2 = true;
@@ -746,7 +744,7 @@ int main(int argc,char *argv[]) {
 
 
 // ALL TRAVERSE
-void AllTraverse(struct All** head, struct All* temp)
+void AllTraverse(struct All** head, struct All** temp)
 {
     int count = 0;
     /*
@@ -758,44 +756,43 @@ void AllTraverse(struct All** head, struct All* temp)
     }
     else
     {
-        temp = (*head);
-        //printf("%p", temp);
-        while (temp != NULL)
+        *temp = (*head);
+        while (*temp != NULL)
         {
             if(!silent)
             {
                 if(count <= 4)
                 {
                     printf("\n\n########################################\n");
-                    printf("Pointer Address: %p\n", temp);
-                    printf("Artist Name: %s\n", temp->ArtistName);
-                    printf("Song Title: %s\n", temp->Song);
-                    printf("Lyric URL: %s\n", temp->LyricURL);
+                    printf("Pointer Address: %p\n", *temp);
+                    printf("Artist Name: %s\n", (*temp)->ArtistName);
+                    printf("Song Title: %s\n", (*temp)->Song);
+                    printf("Lyric URL: %s\n", (*temp)->LyricURL);
                     printf("########################################\n\n");// Print data of current node
                     if(count == 0){
-                        song1 = temp->Song;
-                        lyric1 = temp->LyricURL;
+                        song1 = (*temp)->Song;
+                        lyric1 = (*temp)->LyricURL;
                     }
                     if(count == 1){
-                        song2 = temp->Song;
-                        lyric2 = temp->LyricURL;
+                        song2 = (*temp)->Song;
+                        lyric2 = (*temp)->LyricURL;
                     }
                     if(count == 2){
-                        song3 = temp->Song;
-                        lyric3 = temp->LyricURL;
+                        song3 = (*temp)->Song;
+                        lyric3 = (*temp)->LyricURL;
                     }
                     if(count == 3)
                     {
-                        song4 = temp->Song;
-                        lyric4 = temp->LyricURL;
+                        song4 = (*temp)->Song;
+                        lyric4 = (*temp)->LyricURL;
                     }
                     if(count == 4)
                     {
-                        song5 = temp->Song;
-                        lyric5 = temp->LyricURL;
+                        song5 = (*temp)->Song;
+                        lyric5 = (*temp)->LyricURL;
                     }
                 }
-            temp = temp->next;
+            *temp = (*temp)->next;
             count+=1;
             }
             else
@@ -803,27 +800,27 @@ void AllTraverse(struct All** head, struct All* temp)
                 if(count <= 4)
                 {
                     if(count == 0){
-                        song1 = temp->Song;
-                        lyric1 = temp->LyricURL;
+                        song1 = (*temp)->Song;
+                        lyric1 = (*temp)->LyricURL;
                     }
                     if(count == 1){
-                        song2 = temp->Song;
-                        lyric2 = temp->LyricURL;
+                        song2 = (*temp)->Song;
+                        lyric2 = (*temp)->LyricURL;
                     }
                     if(count == 2){
-                        song3 = temp->Song;
-                        lyric3 = temp->LyricURL;
+                        song3 = (*temp)->Song;
+                        lyric3 = (*temp)->LyricURL;
                     }
                     if(count == 3){
-                        song4 = temp->Song;
-                        lyric4 = temp->LyricURL;
+                        song4 = (*temp)->Song;
+                        lyric4 = (*temp)->LyricURL;
                     }
                     if(count == 4){
-                        song5 = temp->Song;
-                        lyric5 = temp->LyricURL;
+                        song5 = (*temp)->Song;
+                        lyric5 = (*temp)->LyricURL;
                     }
                 }
-            temp = temp->next;
+            *temp = (*temp)->next;
             count+=1;
             }
         }
@@ -845,7 +842,6 @@ void CreateListNodeAll(struct All** head, struct All** temp, char song[], char a
 //Basic insert end node creation for ALL structure
 void InsertEndAll(struct All** head, struct All** temp, char song[], char artist[], char lyric[])
 {
-    //printf("Inside insert end all function");
     struct All* end;
     *temp = malloc(sizeof(struct All));
     strcpy((*temp)->ArtistName, artist);
@@ -874,8 +870,8 @@ void deleteAllSongNodes(struct SongStruct** head)
         struct SongStruct* temp = *head;
         while(*head == NULL)
         {
-            temp = head;
-            head = (*head)->next;
+            temp = *head;
+            *head = (*head)->next;
 
             free(temp);
         }
@@ -894,8 +890,8 @@ void deleteAllArtistNodes(struct ArtistStruct** head)
         struct ArtistStruct* temp = *head;
         while(*head == NULL)
         {
-            temp = head;
-            head = (*head)->next;
+            temp = *head;
+            *head = (*head)->next;
 
             free(temp);
         }
@@ -914,8 +910,8 @@ void deleteAllLyricNodes(struct LyricStruct** head)
         struct LyricStruct* temp = *head;
         while(*head == NULL)
         {
-            temp = head;
-            head = (*head)->next;
+            temp = *head;
+            *head = (*head)->next;
 
             free(temp);
         }
@@ -1028,13 +1024,13 @@ void InsertEndArtist(struct ArtistStruct** head, struct ArtistStruct** temp, cha
 void SongTraverse(struct SongStruct** head, struct SongStruct* temp)
 {
     int count = 0;
-    if (head == NULL)
+    if (*head == NULL)
     {
         printf("List is empty.");
     }
     else
     {
-        temp = head;
+        temp = *head;
         while (temp != NULL)
         {
             if (count == 0)
@@ -1059,13 +1055,13 @@ void SongTraverse(struct SongStruct** head, struct SongStruct* temp)
 void ArtistTraverse(struct ArtistStruct** head, struct ArtistStruct* temp)
 {
     int count = 0;
-    if (head == NULL)
+    if (*head == NULL)
     {
         printf("List is empty.");
     }
     else
     {
-        temp = head;
+        temp = *head;
         while (temp != NULL)
         {
             if (count == 0)
@@ -1094,13 +1090,13 @@ void LyricTraverse(struct LyricStruct** head, struct LyricStruct* temp)
      * If the list is empty i.e. head = NULL
      */
     int count = 0;
-    if (head == NULL)
+    if (*head == NULL)
     {
         printf("List is empty.");
     }
     else
     {
-        temp = head;
+        temp = *head;
         while (temp != NULL)
         {
             if (count == 0)
@@ -1142,7 +1138,7 @@ void combineNodes(struct SongStruct** SongHead, struct LyricStruct** LyricHead, 
     struct ArtistStruct* ArtistTemp = (*ArtistHead);
 
     //Calling for ListNode for the ALL structure with the varibles of other structures
-    CreateListNodeAll(&AllHead, &temp, SongTemp->Song, ArtistTemp->ArtistName, LyricTemp->LyricURL);
+    CreateListNodeAll(AllHead, temp, SongTemp->Song, ArtistTemp->ArtistName, LyricTemp->LyricURL);
 
     //Itterating through the lists by setting the temporary values to the next value of themselves.
     SongTemp = SongTemp->next;
@@ -1153,7 +1149,7 @@ void combineNodes(struct SongStruct** SongHead, struct LyricStruct** LyricHead, 
     while(ArtistTemp->next != NULL)
     {
         //Through itterating adding a node to the end of the list
-        InsertEndAll(&AllHead, &temp, SongTemp->Song, ArtistTemp->ArtistName, LyricTemp->LyricURL);
+        InsertEndAll(AllHead, temp, SongTemp->Song, ArtistTemp->ArtistName, LyricTemp->LyricURL);
 
         //Itterating through the lists by setting the temporary values to the next value of themselves.
         SongTemp = SongTemp->next;
@@ -1162,7 +1158,7 @@ void combineNodes(struct SongStruct** SongHead, struct LyricStruct** LyricHead, 
     }
 
     //Function traverses through the list to print out the details for debugging.
-    AllTraverse(&AllHead, &temp);
+    AllTraverse(AllHead, temp);
 }
 
 void GrabSong()
@@ -1213,9 +1209,6 @@ void GrabSong()
             //Song is the parsed value by break
             char* song = strtok(NULL, brake);
 
-            //Prints Song Title For Logs
-            //printf("\nSONG IS: %s\n", song);
-
             //Looks to see if this is the first itteration, seeing is songTrack has been added. If not it creates the first list node, if so it returns false.
             if(SongTrack == 0)
             {
@@ -1249,19 +1242,16 @@ void GrabSong()
             //Artist is the parsed value by break
             char* artist = strtok(NULL, brake);
 
-            //Prints Artist Name For Logs
-            //printf("\nARTIST IS: %s\n", artist);
-
             //Looks to see if this is the first itteration, seeing is ArtistTrack has been added. If not it creates the first list node, if so it returns false.
             if(ArtistTrack == 0)
             {
-                CreateListNodeSong(&ArtistHead, &ArtistTemp, artist);
+                CreateListNodeArtist(&ArtistHead, &ArtistTemp, artist);
             }
 
             //If ArtistTrack has been hit a list node has been created so it moves to this if statment, otherwise it won't execute.
             if(ArtistTrack > 0)
             {
-                InsertEndSong(&ArtistHead, &ArtistTemp, artist);
+                InsertEndArtist(&ArtistHead, &ArtistTemp, artist);
             }
 
             // Adding values each time this if statement is hit.
@@ -1273,7 +1263,6 @@ void GrabSong()
         if(strcmp(between, ArtistTitle) == 0)
         {
             ArtistCount+=1;
-            //printf("\nArtist is here, count is %d\n", ArtistCount);
         }
         /*
 
@@ -1286,9 +1275,6 @@ void GrabSong()
 
             //Lyric URL is the parsed value by break
             char* lyric = strtok(NULL, brake);
-
-            //Prints Song Title For Logs
-            //printf("\nLyric URL IS: %s\n", lyric);
 
             //Checks for the boolean of a NON-LYRIC URL
             if(!fakeLink)
@@ -1316,12 +1302,11 @@ void GrabSong()
         if(strcmp(between, LyricTitle) == 0)
         {
             LyricCount+=1;
-            //printf("\nArtist is here, count is %d\n", LyricCount);
         }
 
         // For the love of god trying to get rid of non lyric urls but this is so insanely tedious UGHH
         //Trying for URL that doesn't have IQ after it... :/
-        //Alright this took a fat minute but once we fine "name", we know it's not a lyric url so we activate the boolean and turn it to false.
+        //Alright this took a fat minute but once we find "name", we know it's not a lyric url so we activate the boolean and turn it to false.
         if(strcmp(between, FakeLyric) == 0)
         {
             fakeLink = true;
@@ -1331,19 +1316,12 @@ void GrabSong()
         between = strtok(NULL, brake);
     }
 
-    //Calling Traverse functions to see the values real-time
-    /*SongTraverse(&SongHead, &SongTemp);
-    ArtistTraverse(&ArtistHead, &ArtistTemp);
-    LyricTraverse(&LyricHead, &LyricTemp);
-    */
-
     //This is the combineNodes function to combine the 3 different structures into 1
-    //My method is inefficient, but I'm not sure how else I could've gotten the lists recorded when they aren't all found ont he same itteration.
+    //My method is inefficient, but I'm not sure how else I could've gotten the lists recorded when they aren't all found on the same itteration.
     combineNodes(&SongHead, &LyricHead, &ArtistHead, &AllHead, &AllTemp);
 }
 
 void httpsGet(char token[], char url[]) {
-    //printf("passes this bad boy");
     int count = 0;
     CURL* curl = NULL;
     CURLcode res;
@@ -1372,94 +1350,7 @@ void httpsGet(char token[], char url[]) {
         res = curl_easy_perform(curl);
     }
     GrabSong();
-  //  printf("%s", chunk.memory);
-   // parseJson();
-    //free(chunk.memory);
     
     curl_easy_cleanup(curl);
     curl_global_cleanup();
 }
-
-/*
-
-void getLyric() {
-    char url[20];
-    char nexttt[200];
-//char *memory3 = chunk.memory;
-char *memory2 = strdup(chunk.memory);
-//strcpy(memory2, chunk.memory);
-
-    char w2[10] = "\"path";  
-
-int totall = 0;
-   int i2=0,k2=0,c2,index2;
- const char deli[] = "\""; 
-
-
-
-    int clol2 = 0;
-
-           while(memory2[i2]!='\0' && clol2 == 0)
-    {
-        
-        if(memory2[i2]==w2[0])
-        {
-            k2=1;
-            for(c2=1;w2[c2]!='\0';c2++)
-            {
-                if(memory2[i2+c2]!=w2[c2])
-                {
-                 k2=0;
-                 break;
-                }
-            }
-        
-        }
-        if(k2==1)
-        {
-                index2=i2;
-                clol2 = 1;
-        }
-        i2++;
-        k2=0;    
-    }
-        memmove(memory2, memory2+index2+8 ,strlen(memory2));
-           //char *token3;
-      token3=  strtok(memory2, deli); 
-strcat(genioslink,token3);
-      printf("%s\n", genioslink);
-
-}
-void parseJson() {
-    memmove(chunk.memory, chunk.memory+34+55+9, strlen(chunk.memory));
-      getLyric() ;
-
-    char w[10] = "full";
-    int i=0,k=0,c,index;
-    int clol=0;
-    while(chunk.memory[i]!='\0' && clol == 0) {
-        if(chunk.memory[i]==w[0]) {
-            k=1;
-            for(c=1;w[c]!='\0';c++) {
-                if(chunk.memory[i+c]!=w[c]) {
-                    k=0;
-                    break;
-                }
-            }
-        }
-        if(k==1) {
-            index=i;
-            clol=1;
-        }
-        
-        i++;
-        k=0;
-    }
-    
-    //printf (index);
-    memmove(chunk.memory, chunk.memory+index+13 ,strlen(chunk.memory));
-    const char deli[] = "\""; 
-    
-    token2 = strtok(chunk.memory, deli);
-    finalest = strdup(token2);
-}*/
