@@ -9,7 +9,7 @@ pip install requests
 pip install python-vlc
 ```
 ```
-gcc GUI.c -o mycelium `pkg-config --cflags --libs gtk+-3.0` -lcurl
+gcc GUI.c -o GUI `pkg-config --cflags --libs gtk+-3.0` -lcurl
 ```
 To run the program execute it with 
 ```
